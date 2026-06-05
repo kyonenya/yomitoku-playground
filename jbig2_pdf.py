@@ -155,7 +155,14 @@ def merge_pages(page_pdfs: list[Path], final_pdf: Path) -> None:
         with pikepdf.Pdf.open(page_pdf) as src:
             final.pages.extend(src.pages)
 
-    final.save(tmp_pdf)
+    final.remove_unreferenced_resources()
+    final.save(
+        tmp_pdf,
+        compress_streams=True,
+        recompress_flate=True,
+        object_stream_mode=pikepdf.ObjectStreamMode.generate,
+        deterministic_id=True,
+    )
     if final_pdf.exists():
         final_pdf.unlink()
     tmp_pdf.replace(final_pdf)

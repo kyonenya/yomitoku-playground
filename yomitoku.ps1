@@ -4,7 +4,6 @@ param(
     [string]$ScanDir,
     [switch]$Half
 )
-
 $ErrorActionPreference = "Stop"
 
 $tiffDir = Join-Path $ScanDir "out"

@@ -1383,7 +1383,7 @@ wheels = [
 ]
 
 [[package]]
-name = "yomitoku-playground"
+name = "yomitoku-slimpdf"
 version = "0.0.0"
 source = { virtual = "." }
 dependencies = [

@@ -51,9 +51,9 @@ def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
                 Image.Resampling.LANCZOS,
             )
 
-    _, bw = cv2.threshold(np.array(gray), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, bw_img = cv2.threshold(np.array(gray), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     if dest.exists(): dest.unlink()
-    Image.fromarray(bw).convert("1").save(dest, compression="group4", dpi=dpi)
+    Image.fromarray(bw_img).convert("1").save(dest, compression="group4", dpi=dpi)
 
 # TIFFのDPIに合わせてページ内容とページサイズを補正する
 def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) -> None:

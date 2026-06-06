@@ -1,4 +1,4 @@
-# yomitoku-playground
+# yomitoku-slimpdf
 
 日本語書籍のスキャン画像（TIFF）から、YomiToku の OCR 位置精度を保ったまま、サイズの小さい検索可能 PDF を作るためのワークフロー。
 
@@ -40,8 +40,8 @@ uv --version
 
 ### 3. リポジトリを取得して Python 環境を構築
 ```powershell
-git clone <このリポジトリのURL> yomitoku-playground
-cd yomitoku-playground
+git clone <このリポジトリのURL> yomitoku-slimpdf
+cd yomitoku-slimpdf
 uv sync
 ```
 - `uv sync` が Python 3.11 を用意し、`uv.lock` どおりに yomitoku・torch(cu126)・各ライブラリを `.venv` に導入する。
@@ -91,7 +91,7 @@ uv run yomitoku.py "<TIFFフォルダ>" [--half]
 `yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・出力名=フォルダ名・出力先=`<本のフォルダ>\yomitoku` をまとめて行う薄い PowerShell ラッパー。`-Half` で `--half` を渡す。
 ```powershell
 .\yomitoku.ps1 <フォルダパス>
-.\yomitoku.ps1  -Half <フォルダパス>
+.\yomitoku.ps1 -Half <フォルダパス>
 ```
 
 ### 処理の流れ

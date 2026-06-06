@@ -13,7 +13,6 @@ dependencies = [
     "pillow",
     "opencv-python",
     "numpy",
-    "pdfminer.six",
     "img2pdf",
 ]
 

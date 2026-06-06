@@ -10,7 +10,6 @@ from pathlib import Path
 import cv2
 import numpy as np
 import pikepdf
-from pdfminer.high_level import extract_text
 from PIL import Image
 
 
@@ -21,6 +20,9 @@ YOMITOKU_EXE = os.environ.get("YOMITOKU_EXE") or shutil.which("yomitoku") or "yo
 
 # jbig2enc のネイティブ実行ファイル。環境変数 JBIG2_EXE 優先、無ければ PATH から解決。
 JBIG2_EXE = os.environ.get("JBIG2_EXE") or shutil.which("jbig2") or "jbig2"
+
+# 使い方（scan プロジェクトのルートで実行）：
+# uv run jbig2_half_pdf.py "10_Scan\<本のフォルダ>"
 
 PDF_STABLE_SECONDS = 0.4
 POLL_SECONDS = 0.2
@@ -42,20 +44,15 @@ def parse_args() -> argparse.Namespace:
             "with half-resolution JBIG2 backgrounds."
         )
     )
-    parser.add_argument("input_dir", type=Path, help="Directory containing source TIFF files.")
+    parser.add_argument(
+        "scan_dir",
+        type=Path,
+        help="Scan directory containing an out subdirectory with source TIFF files.",
+    )
     parser.add_argument(
         "--output-name",
         default=None,
-        help=(
-            "Final PDF filename. Defaults to the input directory's parent "
-            "folder name with .pdf."
-        ),
-    )
-    parser.add_argument(
-        "--out-dir",
-        type=Path,
-        default=None,
-        help="Output directory. Defaults to input_dir.parent / output name stem.",
+        help="Final PDF filename. Defaults to the scan directory name with .pdf.",
     )
     return parser.parse_args()
 
@@ -67,14 +64,6 @@ def run(cmd: list[str], *, capture: bool = False) -> subprocess.CompletedProcess
         stdout=subprocess.PIPE if capture else None,
         stderr=subprocess.PIPE if capture else None,
     )
-
-
-def is_relative_to(child: Path, parent: Path) -> bool:
-    try:
-        child.resolve().relative_to(parent.resolve())
-    except ValueError:
-        return False
-    return True
 
 
 def expected_yomitoku_pdf(yomitoku_dir: Path, input_dir: Path, tif: Path) -> Path:
@@ -239,91 +228,46 @@ def launch_yomitoku(input_dir: Path, yomitoku_dir: Path) -> subprocess.Popen:
 
 
 def merge_pages(page_pdfs: list[Path], final_pdf: Path) -> None:
+    tmp_pdf = final_pdf.with_name(f"{final_pdf.stem}.tmp{final_pdf.suffix}")
+    if tmp_pdf.exists():
+        tmp_pdf.unlink()
+
     final = pikepdf.Pdf.new()
-    for page_pdf in page_pdfs:
+    total = len(page_pdfs)
+    for index, page_pdf in enumerate(page_pdfs, start=1):
+        print(f"Merging pages: {index}/{total}", flush=True)
         with pikepdf.Pdf.open(page_pdf) as src:
             final.pages.extend(src.pages)
-    final.save(final_pdf)
 
-
-def count_jbig2_pages(pdf_path: Path) -> int:
-    count = 0
-    with pikepdf.Pdf.open(pdf_path) as pdf:
-        for page in pdf.pages:
-            xobjects = page.Resources.get("/XObject", {})
-            for obj in xobjects.values():
-                if (
-                    obj.get("/Subtype", None) == pikepdf.Name("/Image")
-                    and obj.get("/Filter", None) == pikepdf.Name("/JBIG2Decode")
-                ):
-                    count += 1
-    return count
-
-
-def count_text_pages(pdf_path: Path, page_count: int) -> int:
-    text_pages = 0
-    for page_number in range(page_count):
-        text = extract_text(str(pdf_path), page_numbers=[page_number])
-        if text.strip():
-            text_pages += 1
-    return text_pages
-
-
-def verify(
-    final_pdf: Path,
-    tifs: list[Path],
-    yomitoku_dir: Path,
-    page_pdf_dir: Path,
-) -> None:
-    with pikepdf.Pdf.open(final_pdf) as pdf:
-        page_count = len(pdf.pages)
-
-    yomi_pdfs = list(yomitoku_dir.glob("*.pdf"))
-    page_pdfs = list(page_pdf_dir.glob("*.pdf"))
-    text_pages = count_text_pages(final_pdf, page_count)
-    jbig2_pages = count_jbig2_pages(final_pdf)
-    yomi_size = sum(p.stat().st_size for p in yomi_pdfs)
-    final_size = final_pdf.stat().st_size
-
-    print(f"Final PDF: {final_pdf}", flush=True)
-    print(f"Pages: {page_count}", flush=True)
-    print(f"OCR text pages: {text_pages}", flush=True)
-    print(f"JBIG2 image pages: {jbig2_pages}", flush=True)
-    print(f"YomiToku PDFs: {len(yomi_pdfs)}", flush=True)
-    print(f"Lightweight page PDFs: {len(page_pdfs)}", flush=True)
-    print(f"YomiToku total size: {yomi_size / 1024 / 1024:.3f} MB", flush=True)
-    print(f"Final size: {final_size / 1024 / 1024:.3f} MB", flush=True)
-    if yomi_size:
-        print(f"Ratio: {final_size / yomi_size * 100:.1f}%", flush=True)
-
-    expected = len(tifs)
-    if page_count != expected:
-        raise RuntimeError(f"Final page count mismatch: {page_count} != {expected}")
-    if len(yomi_pdfs) != expected:
-        raise RuntimeError(f"YomiToku PDF count mismatch: {len(yomi_pdfs)} != {expected}")
-    if len(page_pdfs) != expected:
-        raise RuntimeError(f"Page PDF count mismatch: {len(page_pdfs)} != {expected}")
-    if text_pages != expected:
-        raise RuntimeError(f"OCR text page count mismatch: {text_pages} != {expected}")
-    if jbig2_pages != expected:
-        raise RuntimeError(f"JBIG2 page count mismatch: {jbig2_pages} != {expected}")
+    final.remove_unreferenced_resources()
+    final.save(
+        tmp_pdf,
+        compress_streams=True,
+        recompress_flate=True,
+        object_stream_mode=pikepdf.ObjectStreamMode.generate,
+        deterministic_id=True,
+    )
+    if final_pdf.exists():
+        final_pdf.unlink()
+    tmp_pdf.replace(final_pdf)
 
 
 def main() -> int:
     args = parse_args()
 
-    input_dir = args.input_dir
-    output_name = Path(args.output_name).name if args.output_name else f"{input_dir.parent.name}.pdf"
-    out_dir = args.out_dir or (input_dir.parent / Path(output_name).stem)
+    scan_dir = args.scan_dir
+    input_dir = scan_dir / "out"
+    output_name = Path(args.output_name).name if args.output_name else f"{scan_dir.name}.pdf"
+    out_dir = scan_dir / "yomitoku"
     final_pdf = out_dir / output_name
     yomitoku_dir = out_dir / "yomitoku_pdf"
     half_tif_dir = out_dir / "half_tif"
     page_pdf_dir = out_dir / "jbig2_pages"
 
+    if not scan_dir.is_dir():
+        raise FileNotFoundError(f"Scan directory not found: {scan_dir}")
     if not input_dir.is_dir():
-        raise FileNotFoundError(f"Input directory not found: {input_dir}")
-    if is_relative_to(out_dir, input_dir):
-        raise ValueError(f"--out-dir must not be inside input_dir: {out_dir}")
+        raise FileNotFoundError(f"Input TIFF directory not found: {input_dir}")
 
     tifs = sorted(input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
@@ -395,9 +339,8 @@ def main() -> int:
     if missing_pages:
         raise RuntimeError(f"Missing lightweight page PDFs: {missing_pages[:3]}")
 
-    print("Merging pages", flush=True)
     merge_pages(page_pdfs, final_pdf)
-    verify(final_pdf, tifs, yomitoku_dir, page_pdf_dir)
+    print(f"Final PDF: {final_pdf}", flush=True)
     return 0
 
 

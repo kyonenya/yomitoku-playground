@@ -53,8 +53,7 @@ def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
                 Image.Resampling.LANCZOS,
             )
 
-    arr = np.array(gray)
-    _, bw = cv2.threshold(arr, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    _, bw = cv2.threshold(np.array(gray), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     if dest.exists(): dest.unlink()
     Image.fromarray(bw).convert("1").save(dest, compression="group4", dpi=dpi)
 
@@ -99,9 +98,10 @@ def replace_background_with_jbig2(
         stderr=subprocess.PIPE,
     )
     if not proc.stdout:
-        stderr = proc.stderr.decode("utf-8", errors="replace") if proc.stderr else ""
-        raise RuntimeError(f"jbig2 produced no stdout for {otsu_tif}: {stderr}")
-    stream = proc.stdout
+        raise RuntimeError(
+            "jbig2 produced no stdout for "
+            f"{otsu_tif}: {proc.stderr.decode('utf-8', errors='replace') if proc.stderr else ''}"
+        )
 
     with Image.open(otsu_tif) as img:
         width, height = img.size
@@ -120,7 +120,7 @@ def replace_background_with_jbig2(
         image_name, _ = image_entries[0]
         xobjects[image_name] = pikepdf.Stream(
             pdf,
-            stream,
+            proc.stdout,
             {
                 "/Type": pikepdf.Name("/XObject"),
                 "/Subtype": pikepdf.Name("/Image"),
@@ -141,9 +141,8 @@ def merge_pages(page_pdfs: list[Path], final_pdf: Path) -> None:
     if tmp_pdf.exists(): tmp_pdf.unlink()
 
     final = pikepdf.Pdf.new()
-    total = len(page_pdfs)
     for index, page_pdf in enumerate(page_pdfs, start=1):
-        print(f"Merging pages: {index}/{total}", flush=True)
+        print(f"Merging pages: {index}/{len(page_pdfs)}", flush=True)
         with pikepdf.Pdf.open(page_pdf) as src:
             final.pages.extend(src.pages)
 
@@ -162,7 +161,6 @@ def merge_pages(page_pdfs: list[Path], final_pdf: Path) -> None:
 def main() -> int:
     args = parse_args()
     input_dir = args.tiff_dir
-    output_name = Path(args.output_name).name
     out_dir = args.out_dir if args.out_dir is not None else input_dir.parent
 
     if not input_dir.is_dir():
@@ -172,7 +170,7 @@ def main() -> int:
     if not tifs:
         raise RuntimeError(f"No TIFF files found in {input_dir}")
 
-    final_pdf = out_dir / output_name
+    final_pdf = out_dir / Path(args.output_name).name
     yomitoku_dir = out_dir / "yomitoku_pdf"
     otsu_tif_dir = out_dir / "otsu_tif"
     page_pdf_dir = out_dir / "jbig2_pages"
@@ -198,16 +196,15 @@ def main() -> int:
         )
 
     page_pdfs = []
-    total = len(tifs)
     for index, (tif, yomi_pdf) in enumerate(zip(tifs, yomi_pdfs), start=1):
         if not yomi_pdf.exists():
             raise FileNotFoundError(f"YomiToku PDF was not created: {yomi_pdf}")
 
         otsu_tif = otsu_tif_dir / tif.name
         page_pdf = page_pdf_dir / f"{tif.stem}.pdf"
-        print(f"[{index}/{total}] {tif.name}: Otsu TIFF", flush=True)
+        print(f"[{index}/{len(tifs)}] {tif.name}: Otsu TIFF", flush=True)
         make_otsu_tif(tif, otsu_tif, half=args.half)
-        print(f"[{index}/{total}] {tif.name}: JBIG2 PDF", flush=True)
+        print(f"[{index}/{len(tifs)}] {tif.name}: JBIG2 PDF", flush=True)
         replace_background_with_jbig2(yomi_pdf, tif, otsu_tif, page_pdf)
         page_pdfs.append(page_pdf)
 

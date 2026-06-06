@@ -4,7 +4,7 @@
 
 YomiToku で検索可能 PDF を生成し、背景のページ画像を **1bit JBIG2** に差し替えることで、OCR テキスト層を維持したまま大幅にサイズを削減する（実測で元の約 4% 前後）。
 
-対象環境: **Windows + NVIDIA GPU**（CUDA）。Python 環境は [uv](https://docs.astral.sh/uv/) で管理する。
+推奨環境: **Windows + NVIDIA GPU**（CUDA）。Python 環境は [uv](https://docs.astral.sh/uv/) で管理する。
 
 ---
 
@@ -16,7 +16,7 @@ YomiToku で検索可能 PDF を生成し、背景のページ画像を **1bit J
 | GPU | **NVIDIA ドライバ** | GeForce 等。CUDA Toolkit / nvcc は**不要**（torch の cu126 wheel がランタイムを同梱） |
 | ネイティブ | **jbig2enc**（`jbig2.exe`, 0.29） | uv 管理外。手動で導入し PATH に通す |
 
-Python パッケージ（yomitoku, torch+cu126, pikepdf, pillow, opencv-python, numpy, pdfminer.six, img2pdf）は **`uv sync` が `uv.lock` から自動導入**するので個別インストールは不要。
+Python パッケージは **`uv sync` が `uv.lock` から自動導入**するので個別インストールは不要。
 
 ---
 
@@ -75,17 +75,24 @@ JBIG2 圧縮に必須のネイティブツール。uv では管理しない。
 ## 使い方
 
 入力は **1ページ1枚の TIFF を集めたフォルダ**。
-処理は `jbig2_pdf.py` が担う。プロジェクトのルートで `uv run` から実行する。
+処理は `yomitoku.py` が担う。プロジェクトのルートで `uv run` から実行する。
 **`--half` を付けると半分解像度化して PDF をさらに小さくできる**（既定は元解像度）。
 
 ```powershell
-uv run jbig2_pdf.py "<TIFFフォルダ>" [--half]
+uv run yomitoku.py "<TIFFフォルダ>" [--half]
 ```
 引数・オプション:
 - 第1引数: `*.tif` が直接入ったフォルダ。
 - `--out-dir <出力先>`: 中間ファイルと最終 PDF の出力先。省略時は **TIFF フォルダの親**。
 - `--output-name <名前.pdf>`: 最終 PDF 名（basename のみ）。省略時は `output.pdf`。
 - `--half`: 二値化前に各ページを半分解像度へ縮小する（小さくなる）。省略時は元解像度。
+
+### ラッパー
+`yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・出力名=フォルダ名・出力先=`<本のフォルダ>\yomitoku` をまとめて行う薄い PowerShell ラッパー。`-Half` で `--half` を渡す。
+```powershell
+.\yomitoku.ps1 "10_Scan\<本のフォルダ>"          # 元解像度
+.\yomitoku.ps1 "10_Scan\<本のフォルダ>" -Half    # 半分解像度
+```
 
 ### 処理の流れ
 1. 入力フォルダの `*.tif` を名前昇順で対象にする。
@@ -101,7 +108,4 @@ uv run jbig2_pdf.py "<TIFFフォルダ>" [--half]
 
 - **GPU torch の固定**: YomiToku は公開メタデータに CUDA 版 torch の索引を持たないため、`pyproject.toml` で torch/torchvision を cu126 wheel 索引（`[[tool.uv.index]]` + `[tool.uv.sources]`）に固定している。`uv tool install` / `uv run` では `--torch-backend` が使えない（`uv pip` 専用）ため、この方式が確実。
 - **PDF 品質**: YomiToku は `--pdf_quality high` を使う。`middle` / `low` は OCR テキストの位置がずれることがある。
-- **入力データはリポジトリに含めない**: `*.tif` `*.pdf` `10_Scan` は `.gitignore` 済み。スクリプトと設定（`pyproject.toml` / `uv.lock`）だけが版管理対象。
 - **別 PC への移植**: 同じ Windows + NVIDIA 環境なら `git clone` → `uv sync` → `jbig2enc` を PATH に通す、でそのまま動く。GPU が無い PC では cu126 torch は CPU 動作になり非常に遅い。
-
-詳細な実験ログや調査結果は [AGENTS.md](AGENTS.md) を参照。

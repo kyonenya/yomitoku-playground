@@ -10,12 +10,6 @@ import numpy as np
 import pikepdf
 from PIL import Image
 
-# YomiToku は scan プロジェクトの uv venv 内に導入される。
-# `uv run jbig2_pdf.py ...` で実行すると venv の Scripts が PATH に乗るため which で解決できる。
-# 環境変数 YOMITOKU_EXE で明示的に上書きも可能。
-YOMITOKU_EXE = os.environ.get("YOMITOKU_EXE") or shutil.which("yomitoku") or "yomitoku"
-
-# jbig2enc のネイティブ実行ファイル。環境変数 JBIG2_EXE 優先、無ければ PATH から解決。
 JBIG2_EXE = os.environ.get("JBIG2_EXE") or shutil.which("jbig2") or "jbig2"
 
 # コマンドライン引数を読み取る
@@ -211,7 +205,7 @@ def main() -> int:
     else:
         run(
             [
-                str(YOMITOKU_EXE),
+                "yomitoku",
                 str(input_dir),
                 "-f",
                 "pdf",

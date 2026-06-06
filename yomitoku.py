@@ -1,5 +1,6 @@
 import argparse
 import subprocess
+import tempfile
 from pathlib import Path
 
 import cv2
@@ -86,7 +87,7 @@ def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) 
     page.CropBox = new_box
 
 # OCR層を残したままYomiTokuの背景画像XObjectをJBIG2へ差し替えた単ページPDFを返す
-def make_jbig2_page_pdf(
+def replace_background_with_jbig2(
     pdf_path: Path, src_tif: Path, otsu_tif: Path
 ) -> pikepdf.Pdf:
     if not JBIG2ENC_EXE.is_file():
@@ -150,8 +151,7 @@ def main() -> int:
 
     final_pdf = out_dir / Path(args.output_name).name
     yomitoku_dir = out_dir / "yomitoku_pdf"
-    otsu_tif_dir = out_dir / "otsu_tif"
-    for path in (out_dir, yomitoku_dir, otsu_tif_dir):
+    for path in (out_dir, yomitoku_dir):
         path.mkdir(parents=True, exist_ok=True)
 
     yomi_pdfs = [yomitoku_dir / f"{input_dir.name}_{tif.stem}_p1.pdf" for tif in tifs]
@@ -160,29 +160,25 @@ def main() -> int:
     else:
         subprocess.run(
             [
-                "yomitoku",
-                str(input_dir),
-                "-f",
-                "pdf",
-                "--pdf_quality",
-                "high",
-                "-o",
-                str(yomitoku_dir),
+                "yomitoku", str(input_dir),
+                "-f", "pdf",
+                "--pdf_quality", "high",
+                "-o", str(yomitoku_dir),
             ],
             check=True,
         )
 
     final = pikepdf.Pdf.new()
-    for index, (tif, yomi_pdf) in enumerate(zip(tifs, yomi_pdfs), start=1):
-        if not yomi_pdf.exists():
-            raise FileNotFoundError(f"YomiToku PDF was not created: {yomi_pdf}")
+    with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
+        tmp_dir_path = Path(tmp_dir)
+        for index, (tif, yomi_pdf) in enumerate(zip(tifs, yomi_pdfs), start=1):
+            if not yomi_pdf.exists():
+                raise FileNotFoundError(f"YomiToku PDF was not created: {yomi_pdf}")
 
-        otsu_tif = otsu_tif_dir / tif.name
-        print(f"[{index}/{len(tifs)}] {tif.name}: Otsu TIFF", flush=True)
-        make_otsu_tif(tif, otsu_tif, half=args.half)
-        print(f"[{index}/{len(tifs)}] {tif.name}: JBIG2 background", flush=True)
-        with make_jbig2_page_pdf(yomi_pdf, tif, otsu_tif) as page_pdf:
-            final.pages.append(page_pdf.pages[0])
+            otsu_tif = tmp_dir_path / tif.name
+            make_otsu_tif(tif, otsu_tif, half=args.half)
+            with replace_background_with_jbig2(yomi_pdf, tif, otsu_tif) as page_pdf:
+                final.pages.append(page_pdf.pages[0])
 
     tmp_pdf = final_pdf.with_name(f"{final_pdf.stem}.tmp{final_pdf.suffix}")
     if tmp_pdf.exists(): tmp_pdf.unlink()

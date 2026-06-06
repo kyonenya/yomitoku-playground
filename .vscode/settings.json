@@ -1,6 +1,0 @@
-{
-  // uv が作成した .venv を既定の Python インタプリタにする。
-  // これで cv2 / numpy / pikepdf / PIL などの import が解決される。
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/Scripts/python.exe",
-  "python.terminal.activateEnvironment": true
-}

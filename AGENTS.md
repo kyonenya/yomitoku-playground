@@ -2,6 +2,10 @@
 
 このディレクトリでは、日本語書籍スキャン画像から、YomiToku のOCR位置精度を保ったまま、サイズの小さい検索可能PDFを作るための実験を行った。
 
+## Codex 作業メモ
+
+- このワークスペースでは `shell_command` が `windows sandbox: spawn setup refresh` で失敗することがある。重要な確認コマンドでこれが出た場合は、同じコマンドを `sandbox_permissions="require_escalated"` で再実行する。
+
 ## 環境管理（uv へ移行済み・2026-06-06）
 
 pip による場当たり導入をやめ、全体を **uv** で管理する構成に作り直した。

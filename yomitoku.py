@@ -2,13 +2,13 @@ import argparse
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import cast
 
 import cv2
 import numpy as np
 import pikepdf
 from PIL import Image
 
-JBIG2ENC_EXE = Path(__file__).resolve().parent / "jbig2enc-0.31-Windows-X64-MSVC" / "bin" / "jbig2.exe"
 
 # コマンドライン引数を読み取る
 def parse_args() -> argparse.Namespace:
@@ -41,6 +41,7 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
+
 # TIFFをOtsu二値化した1bit TIFFにする。half=True なら二値化前に半分解像度へ縮小する
 def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
     with Image.open(src) as img:
@@ -55,15 +56,20 @@ def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
                 Image.Resampling.LANCZOS,
             )
 
-    _, bw_img = cv2.threshold(np.array(gray), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    if dest.exists(): dest.unlink()
+    _, bw_img = cv2.threshold(
+        np.array(gray), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+    )
+    if dest.exists():
+        dest.unlink()
     Image.fromarray(bw_img).convert("1").save(dest, compression="group4", dpi=dpi)
+
 
 # TIFFのDPIに合わせてページ内容とページサイズを補正する
 def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) -> None:
     def dpi_scale(src: Path) -> tuple[float, float]:
         with Image.open(src) as img:
-            x_dpi, y_dpi = img.info.get("dpi")
+            dpi = cast(tuple[float, float], img.info.get("dpi"))
+        x_dpi, y_dpi = dpi
         return 72 / float(x_dpi), 72 / float(y_dpi)
 
     scale_x, scale_y = dpi_scale(src_tif)
@@ -89,10 +95,14 @@ def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) 
     page.MediaBox = new_box
     page.CropBox = new_box
 
+
 # OCR層を残したままYomiTokuの背景画像XObjectをJBIG2へ差し替えた単ページPDFを返す
 def replace_background_with_jbig2(
     pdf_path: Path, src_tif: Path, otsu_tif: Path
 ) -> pikepdf.Pdf:
+    JBIG2ENC_EXE = (
+        Path(__file__).resolve().parent / "jbig2enc-0.31-Windows-X64-MSVC/bin/jbig2.exe"
+    )
     if not JBIG2ENC_EXE.is_file():
         raise FileNotFoundError(f"jbig2enc executable not found: {JBIG2ENC_EXE}")
 
@@ -137,7 +147,9 @@ def replace_background_with_jbig2(
         },
     )
     set_physical_page_size(pdf, page, src_tif)
+
     return pdf
+
 
 # OCR PDF生成、JBIG2差し替え、結合を順に実行する
 def main() -> int:
@@ -154,16 +166,22 @@ def main() -> int:
     for path in (args.output.parent, args.workdir):
         path.mkdir(parents=True, exist_ok=True)
 
-    yomi_pdfs = [args.workdir / f"{args.input_dir.name}_{tif.stem}_p1.pdf" for tif in tifs]
+    yomi_pdfs = [
+        args.workdir / f"{args.input_dir.name}_{tif.stem}_p1.pdf" for tif in tifs
+    ]
     if all(pdf.exists() for pdf in yomi_pdfs):
         print("Reusing existing YomiToku PDFs", flush=True)
     else:
         subprocess.run(
             [
-                "yomitoku", str(args.input_dir),
-                "-f", "pdf",
-                "--pdf_quality", "high",
-                "--outdir", str(args.workdir),
+                "yomitoku",
+                str(args.input_dir),
+                "-f",
+                "pdf",
+                "--pdf_quality",
+                "high",
+                "--outdir",
+                str(args.workdir),
             ],
             check=True,
         )
@@ -181,7 +199,8 @@ def main() -> int:
                 final.pages.append(page_pdf.pages[0])
 
     tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")
-    if tmp_pdf.exists(): tmp_pdf.unlink()
+    if tmp_pdf.exists():
+        tmp_pdf.unlink()
 
     final.remove_unreferenced_resources()
     final.save(
@@ -191,10 +210,12 @@ def main() -> int:
         object_stream_mode=pikepdf.ObjectStreamMode.generate,
         deterministic_id=True,
     )
-    if args.output.exists(): args.output.unlink()
+    if args.output.exists():
+        args.output.unlink()
     tmp_pdf.replace(args.output)
     print(f"Output PDF: {args.output}", flush=True)
     return 0
+
 
 if __name__ == "__main__":
     raise SystemExit(main())

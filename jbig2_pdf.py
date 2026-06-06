@@ -39,6 +39,11 @@ def parse_args() -> argparse.Namespace:
         default="output.pdf",
         help="Final PDF filename (basename only). Defaults to output.pdf.",
     )
+    parser.add_argument(
+        "--half",
+        action="store_true",
+        help="Downscale each page to half resolution before binarization (smaller PDF).",
+    )
     return parser.parse_args()
 
 # 外部コマンドを実行し、失敗時は例外にする
@@ -54,11 +59,17 @@ def run(cmd: list[str], *, capture: bool = False) -> subprocess.CompletedProcess
 def expected_yomitoku_pdf(yomitoku_dir: Path, input_dir: Path, tif: Path) -> Path:
     return yomitoku_dir / f"{input_dir.name}_{tif.stem}_p1.pdf"
 
-# TIFFをOtsu二値化した1bit TIFFにする
-def make_otsu_tif(src: Path, dest: Path) -> None:
+# TIFFをOtsu二値化した1bit TIFFにする。half=True なら二値化前に半分解像度へ縮小する
+def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
     with Image.open(src) as img:
         gray = img.convert("L")
         dpi = img.info.get("dpi") or (300, 300)
+        if half:
+            width, height = gray.size
+            gray = gray.resize(
+                (max(1, width // 2), max(1, height // 2)),
+                Image.Resampling.LANCZOS,
+            )
 
     arr = np.array(gray)
     _, bw = cv2.threshold(arr, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -220,7 +231,7 @@ def main() -> int:
         otsu_tif = otsu_tif_dir / tif.name
         page_pdf = page_pdf_dir / f"{tif.stem}.pdf"
         print(f"[{index}/{total}] {tif.name}: Otsu TIFF", flush=True)
-        make_otsu_tif(tif, otsu_tif)
+        make_otsu_tif(tif, otsu_tif, half=args.half)
         print(f"[{index}/{total}] {tif.name}: JBIG2 PDF", flush=True)
         replace_background_with_jbig2(yomi_pdf, tif, otsu_tif, page_pdf)
         page_pdfs.append(page_pdf)

@@ -208,15 +208,17 @@ YomiToku PDF生成、半分解像度JBIG2背景差し替え、PDF結合をまと
 `jbig2_pdf.py` に混在していた「私のディレクトリ構成依存の処理」と「普遍的な処理」を分離した。
 
 - `jbig2_pdf.py` は**汎用ツール**にした。単独でも呼べる。
-  - 引数は `tiff_dir`（`*.tif` が直接入ったフォルダ）、`--out-dir`（中間+最終PDFの出力先、省略時は `tiff_dir` の親）、`--output-name`（省略時 `output.pdf`、basename のみ）。
+  - 引数は `tiff_dir`（`*.tif` が直接入ったフォルダ）、`--out-dir`（中間+最終PDFの出力先、省略時は `tiff_dir` の親）、`--output-name`（省略時 `output.pdf`、basename のみ）、`--half`（二値化前に半分解像度へ縮小、既定は元解像度）。
   - `/out` を付ける・`/cache` を消す・出力名をフォルダ名にする・出力先を決める、といった構成依存は**持たない**。
-  - 実行例: `uv run jbig2_pdf.py "<TIFFフォルダ>" --out-dir "<出力先>" --output-name "本.pdf"`
+  - 実行例: `uv run jbig2_pdf.py "<TIFFフォルダ>" --out-dir "<出力先>" --output-name "本.pdf" --half`
+  - **`jbig2_half_pdf.py` は廃止**し、半分解像度化を `jbig2_pdf.py --half` に統合した（`make_otsu_tif` が `half=True` のとき LANCZOS で半分に縮小してから Otsu 二値化）。背景画素を半分にしてもページ物理サイズは元 TIFF の DPI と YomiToku PDF の MediaBox 基準で決まるため変わらない。
 - 構成依存の処理は**薄いラッパー `run_jbig2.ps1`** に切り出した（PowerShell で実行）。
   - `<本のフォルダ>\out` を TIFF フォルダとして `jbig2_pdf.py` に渡す。
   - `<本のフォルダ>\out\cache` があれば消す。
   - 出力名を `<本のフォルダ名>.pdf`、出力先を `<本のフォルダ>\yomitoku` にする。
+  - `-Half` スイッチを受け取り、付いていれば `--half` を `jbig2_pdf.py` にパススルーする（既定 OFF）。
   - 結果として最終PDFは従来どおり `<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` に出る。
-  - 実行例: `.\run_jbig2.ps1 "10_Scan\250620_Seminaire 1-1"`
+  - 実行例: `.\run_jbig2.ps1 "10_Scan\250620_Seminaire 1-1"` / `.\run_jbig2.ps1 "..." -Half`
   - PowerShell にしたのは、`uv` が git bash の PATH に乗らず（winget 配置のため）`.sh` から呼べなかったため。
   - 日本語コメント入りの `.ps1` は **UTF-8 BOM 付き**で保存する。Windows PowerShell 5.1 は BOM なしを Shift-JIS と誤認してパースエラーになる。
 

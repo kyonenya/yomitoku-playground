@@ -43,7 +43,9 @@ def parse_args() -> argparse.Namespace:
 def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
     with Image.open(src) as img:
         gray = img.convert("L")
-        dpi = img.info.get("dpi") or (300, 300)
+        dpi = img.info.get("dpi")
+        if dpi is None:
+            raise RuntimeError(f"TIFF DPI metadata is missing: {src}")
         if half:
             width, height = gray.size
             gray = gray.resize(
@@ -60,9 +62,7 @@ def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
 def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) -> None:
     def dpi_scale(src: Path) -> tuple[float, float]:
         with Image.open(src) as img:
-            x_dpi, y_dpi = img.info.get("dpi") or (300, 300)
-        if not x_dpi or not y_dpi:
-            x_dpi, y_dpi = 300, 300
+            x_dpi, y_dpi = img.info.get("dpi")
         return 72 / float(x_dpi), 72 / float(y_dpi)
 
     scale_x, scale_y = dpi_scale(src_tif)

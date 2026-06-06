@@ -1,6 +1,4 @@
 import argparse
-import os
-import shutil
 import subprocess
 from pathlib import Path
 
@@ -9,7 +7,7 @@ import numpy as np
 import pikepdf
 from PIL import Image
 
-JBIG2_EXE = os.environ.get("JBIG2_EXE") or shutil.which("jbig2") or "jbig2"
+JBIG2ENC_EXE = Path(__file__).resolve().parent / "jbig2enc-0.31-Windows-X64-MSVC" / "bin" / "jbig2.exe"
 
 # コマンドライン引数を読み取る
 def parse_args() -> argparse.Namespace:
@@ -91,8 +89,11 @@ def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) 
 def replace_background_with_jbig2(
     pdf_path: Path, src_tif: Path, otsu_tif: Path, out_pdf: Path
 ) -> None:
+    if not JBIG2ENC_EXE.is_file():
+        raise FileNotFoundError(f"jbig2enc executable not found: {JBIG2ENC_EXE}")
+
     proc = subprocess.run(
-        [str(JBIG2_EXE), "--pdf", str(otsu_tif)],
+        [str(JBIG2ENC_EXE), "--pdf", str(otsu_tif)],
         check=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,

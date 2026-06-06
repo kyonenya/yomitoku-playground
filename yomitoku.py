@@ -2,7 +2,6 @@ import argparse
 import os
 import shutil
 import subprocess
-import sys
 from pathlib import Path
 
 import cv2
@@ -40,19 +39,6 @@ def parse_args() -> argparse.Namespace:
     )
     return parser.parse_args()
 
-# 外部コマンドを実行し、失敗時は例外にする
-def run(cmd: list[str], *, capture: bool = False) -> subprocess.CompletedProcess:
-    return subprocess.run(
-        cmd,
-        check=True,
-        stdout=subprocess.PIPE if capture else None,
-        stderr=subprocess.PIPE if capture else None,
-    )
-
-# YomiTokuの既定命名規則から単ページPDFパスを作る
-def expected_yomitoku_pdf(yomitoku_dir: Path, input_dir: Path, tif: Path) -> Path:
-    return yomitoku_dir / f"{input_dir.name}_{tif.stem}_p1.pdf"
-
 # TIFFをOtsu二値化した1bit TIFFにする。half=True なら二値化前に半分解像度へ縮小する
 def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
     with Image.open(src) as img:
@@ -67,32 +53,27 @@ def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
 
     arr = np.array(gray)
     _, bw = cv2.threshold(arr, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    if dest.exists():
-        dest.unlink()
+    if dest.exists(): dest.unlink()
     Image.fromarray(bw).convert("1").save(dest, compression="group4", dpi=dpi)
-
-# TIFFのDPIをPDFポイントへの倍率に変換する
-def dpi_scale(src: Path) -> tuple[float, float]:
-    with Image.open(src) as img:
-        dpi = img.info.get("dpi") or (300, 300)
-
-    x_dpi, y_dpi = dpi
-    if not x_dpi or not y_dpi:
-        x_dpi, y_dpi = 300, 300
-    return 72 / float(x_dpi), 72 / float(y_dpi)
-
-# ページのコンテンツストリームをバイト列として読む
-def page_contents_bytes(page: pikepdf.Page) -> bytes:
-    contents = page.obj.get("/Contents", None)
-    if contents is None:
-        return b""
-    if isinstance(contents, pikepdf.Array):
-        return b"\n".join(stream.read_bytes() for stream in contents)
-    return contents.read_bytes()
 
 # TIFFのDPIに合わせてページ内容とページサイズを補正する
 def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) -> None:
+    def dpi_scale(src: Path) -> tuple[float, float]:
+        with Image.open(src) as img:
+            x_dpi, y_dpi = img.info.get("dpi") or (300, 300)
+        if not x_dpi or not y_dpi:
+            x_dpi, y_dpi = 300, 300
+        return 72 / float(x_dpi), 72 / float(y_dpi)
+
     scale_x, scale_y = dpi_scale(src_tif)
+    contents = page.obj.get("/Contents", None)
+    if contents is None:
+        content_bytes = b""
+    elif isinstance(contents, pikepdf.Array):
+        content_bytes = b"\n".join(stream.read_bytes() for stream in contents)
+    else:
+        content_bytes = contents.read_bytes()
+
     media_box = page.MediaBox
     width = float(media_box[2]) - float(media_box[0])
     height = float(media_box[3]) - float(media_box[1])
@@ -100,26 +81,28 @@ def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) 
 
     wrapped = (
         f"q\n{scale_x:.12g} 0 0 {scale_y:.12g} 0 0 cm\n".encode("ascii")
-        + page_contents_bytes(page)
+        + content_bytes
         + b"\nQ\n"
     )
     page.Contents = pikepdf.Stream(pdf, wrapped)
     page.MediaBox = new_box
     page.CropBox = new_box
 
-# 1bit TIFFをPDF埋め込み用JBIG2ストリームにする
-def jbig2_stream(tif: Path) -> bytes:
-    proc = run([str(JBIG2_EXE), "--pdf", str(tif)], capture=True)
-    if not proc.stdout:
-        stderr = proc.stderr.decode("utf-8", errors="replace") if proc.stderr else ""
-        raise RuntimeError(f"jbig2 produced no stdout for {tif}: {stderr}")
-    return proc.stdout
-
 # OCR層を残したままYomiTokuの背景画像XObjectを差し替える
 def replace_background_with_jbig2(
     pdf_path: Path, src_tif: Path, otsu_tif: Path, out_pdf: Path
 ) -> None:
-    stream = jbig2_stream(otsu_tif)
+    proc = subprocess.run(
+        [str(JBIG2_EXE), "--pdf", str(otsu_tif)],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if not proc.stdout:
+        stderr = proc.stderr.decode("utf-8", errors="replace") if proc.stderr else ""
+        raise RuntimeError(f"jbig2 produced no stdout for {otsu_tif}: {stderr}")
+    stream = proc.stdout
+
     with Image.open(otsu_tif) as img:
         width, height = img.size
 
@@ -149,15 +132,13 @@ def replace_background_with_jbig2(
             },
         )
         set_physical_page_size(pdf, page, src_tif)
-        if out_pdf.exists():
-            out_pdf.unlink()
+        if out_pdf.exists(): out_pdf.unlink()
         pdf.save(out_pdf)
 
-# 進捗を表示しながら単ページPDFを最終PDFへ結合する
+# 単ページPDFを最終PDFへ結合する
 def merge_pages(page_pdfs: list[Path], final_pdf: Path) -> None:
     tmp_pdf = final_pdf.with_name(f"{final_pdf.stem}.tmp{final_pdf.suffix}")
-    if tmp_pdf.exists():
-        tmp_pdf.unlink()
+    if tmp_pdf.exists(): tmp_pdf.unlink()
 
     final = pikepdf.Pdf.new()
     total = len(page_pdfs)
@@ -174,8 +155,7 @@ def merge_pages(page_pdfs: list[Path], final_pdf: Path) -> None:
         object_stream_mode=pikepdf.ObjectStreamMode.generate,
         deterministic_id=True,
     )
-    if final_pdf.exists():
-        final_pdf.unlink()
+    if final_pdf.exists(): final_pdf.unlink()
     tmp_pdf.replace(final_pdf)
 
 # OCR PDF生成、JBIG2差し替え、結合を順に実行する
@@ -199,11 +179,11 @@ def main() -> int:
     for path in (out_dir, yomitoku_dir, otsu_tif_dir, page_pdf_dir):
         path.mkdir(parents=True, exist_ok=True)
 
-    yomi_pdfs = [expected_yomitoku_pdf(yomitoku_dir, input_dir, tif) for tif in tifs]
+    yomi_pdfs = [yomitoku_dir / f"{input_dir.name}_{tif.stem}_p1.pdf" for tif in tifs]
     if all(pdf.exists() for pdf in yomi_pdfs):
         print("Reusing existing YomiToku PDFs", flush=True)
     else:
-        run(
+        subprocess.run(
             [
                 "yomitoku",
                 str(input_dir),
@@ -213,7 +193,8 @@ def main() -> int:
                 "high",
                 "-o",
                 str(yomitoku_dir),
-            ]
+            ],
+            check=True,
         )
 
     page_pdfs = []
@@ -235,8 +216,4 @@ def main() -> int:
     return 0
 
 if __name__ == "__main__":
-    try:
-        raise SystemExit(main())
-    except Exception as exc:
-        print(f"ERROR: {exc}", file=sys.stderr, flush=True)
-        raise
+    raise SystemExit(main())

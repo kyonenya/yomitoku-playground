@@ -1,4 +1,5 @@
 import argparse
+import os
 import shutil
 import subprocess
 import sys
@@ -9,14 +10,16 @@ import numpy as np
 import pikepdf
 from PIL import Image
 
-YOMITOKU_EXE = Path(
-    r"C:\Users\kyone\AppData\Roaming\Python\Python311\Scripts\yomitoku.exe"
-)
-JBIG2_EXE = Path(r"C:\Users\kyone\Documents\jbig2enc\jbig2.exe")
+# YomiToku は scan プロジェクトの uv venv 内に導入される。
+# `uv run jbig2_pdf.py ...` で実行すると venv の Scripts が PATH に乗るため which で解決できる。
+# 環境変数 YOMITOKU_EXE で明示的に上書きも可能。
+YOMITOKU_EXE = os.environ.get("YOMITOKU_EXE") or shutil.which("yomitoku") or "yomitoku"
 
-# 使い方：
-# cd C:\Users\kyone\scan
-# py -3.11 jbig2_pdf.py "C:\Users\kyone\scan\10_Scan\250527_ウォルトン-フィクションとはなにか"
+# jbig2enc のネイティブ実行ファイル。環境変数 JBIG2_EXE 優先、無ければ PATH から解決。
+JBIG2_EXE = os.environ.get("JBIG2_EXE") or shutil.which("jbig2") or "jbig2"
+
+# 使い方（scan プロジェクトのルートで実行）：
+# uv run jbig2_pdf.py "10_Scan\<本のフォルダ>"
 
 # コマンドライン引数を読み取る
 def parse_args() -> argparse.Namespace:

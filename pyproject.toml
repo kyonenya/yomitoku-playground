@@ -1,0 +1,33 @@
+[project]
+name = "yomitoku-playground"
+version = "0.0.0"
+description = "日本語書籍スキャンの検索可能PDF生成・JBIG2背景圧縮ワークフロー。YomiToku(GPU)で生成し、背景画像を1bit JBIG2に差し替える。"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    # OCR / 検索可能PDF生成（GPU）
+    "yomitoku==0.13.0",
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+    # スクリプトが直接 import するライブラリ
+    "pikepdf",
+    "pillow",
+    "opencv-python",
+    "numpy",
+    "pdfminer.six",
+    "img2pdf",
+]
+
+# スクリプト群を実行するだけの仮想プロジェクト（ビルド対象のパッケージは無い）。
+[tool.uv]
+package = false
+
+# YomiToku は公開メタデータに CUDA 版 torch の索引を持たないため、
+# torch/torchvision を cu126 wheel 索引に明示的に固定して GPU 版を確実に取得する。
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu126" }
+torchvision = { index = "pytorch-cu126" }

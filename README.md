@@ -79,16 +79,18 @@ Remove-Item "jbig2enc-0.31-Windows-X64-MSVC.zip"
 `--half` を付けると半分解像度化して PDF をさらに小さくできる（既定は元解像度）。
 
 ```powershell
-uv run yomitoku.py "<TIFFフォルダ>" [--half]
+uv run yomitoku.py "<入力フォルダ>" [--output "<出力PDFパス>"] [--workdir "<作業ディレクトリ>"] [--half]
+uv run yomitoku.py "<入力フォルダ>" -o "<出力PDFパス>" -w "<作業ディレクトリ>" [--half]
 ```
+
 引数・オプション:
 - 第1引数: `*.tif` が直接入ったフォルダ。
-- `--out-dir <出力先>`: 中間ファイルと最終 PDF の出力先。省略時は TIFF フォルダの親。
-- `--output-name <名前.pdf>`: 最終 PDF 名（basename のみ）。省略時は `output.pdf`。
+- `--output <PDFパス>` / `-o <PDFパス>`: 最終 PDF の出力パス。省略時は実行ディレクトリ直下の `output.pdf`。
+- `--workdir <作業ディレクトリ>` / `-w <作業ディレクトリ>`: YomiToku OCR 結果 PDF などの作業ファイル出力先。省略時は TIFF フォルダの親。
 - `--half`: 二値化前に各ページを半分解像度へ縮小する（小さくなる）。省略時は元解像度。
 
 ### ラッパー
-`yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・出力名=フォルダ名・出力先=`<本のフォルダ>\yomitoku` をまとめて行う薄い PowerShell ラッパー。`-Half` で `--half` を渡す。
+`yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・最終 PDF=`<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf`・作業ディレクトリ=`<本のフォルダ>\yomitoku\yomitoku_pdf` を組み立てて渡す薄い PowerShell ラッパー。`-Half` で `--half` を渡す。
 ```powershell
 .\yomitoku.ps1 <フォルダパス>
 .\yomitoku.ps1 -Half <フォルダパス>

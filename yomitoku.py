@@ -16,20 +16,23 @@ def parse_args() -> argparse.Namespace:
         description="Create a searchable PDF and replace page images with JBIG2 backgrounds."
     )
     parser.add_argument(
-        "tiff_dir",
+        "input_dir",
         type=Path,
         help="Directory containing source TIFF files directly.",
     )
     parser.add_argument(
-        "--out-dir",
+        "-o",
+        "--output",
         type=Path,
-        default=None,
-        help="Directory for intermediate files and the final PDF. Defaults to the TIFF directory's parent.",
+        default=Path("output.pdf"),
+        help="Final PDF path. Defaults to output.pdf in the current directory.",
     )
     parser.add_argument(
-        "--output-name",
-        default="output.pdf",
-        help="Final PDF filename (basename only). Defaults to output.pdf.",
+        "-w",
+        "--workdir",
+        type=Path,
+        default=None,
+        help="Directory for YomiToku OCR PDF work files. Defaults to the input directory's parent.",
     )
     parser.add_argument(
         "--half",
@@ -139,31 +142,28 @@ def replace_background_with_jbig2(
 # OCR PDF生成、JBIG2差し替え、結合を順に実行する
 def main() -> int:
     args = parse_args()
-    input_dir = args.tiff_dir
-    out_dir = args.out_dir if args.out_dir is not None else input_dir.parent
+    if not args.input_dir.is_dir():
+        raise FileNotFoundError(f"Input TIFF directory not found: {args.input_dir}")
+    if args.workdir is None:
+        args.workdir = args.input_dir.parent
 
-    if not input_dir.is_dir():
-        raise FileNotFoundError(f"Input TIFF directory not found: {input_dir}")
-
-    tifs = sorted(input_dir.glob("*.tif"), key=lambda p: p.name)
+    tifs = sorted(args.input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
-        raise RuntimeError(f"No TIFF files found in {input_dir}")
+        raise RuntimeError(f"No TIFF files found in {args.input_dir}")
 
-    final_pdf = out_dir / Path(args.output_name).name
-    yomitoku_dir = out_dir / "yomitoku_pdf"
-    for path in (out_dir, yomitoku_dir):
+    for path in (args.output.parent, args.workdir):
         path.mkdir(parents=True, exist_ok=True)
 
-    yomi_pdfs = [yomitoku_dir / f"{input_dir.name}_{tif.stem}_p1.pdf" for tif in tifs]
+    yomi_pdfs = [args.workdir / f"{args.input_dir.name}_{tif.stem}_p1.pdf" for tif in tifs]
     if all(pdf.exists() for pdf in yomi_pdfs):
         print("Reusing existing YomiToku PDFs", flush=True)
     else:
         subprocess.run(
             [
-                "yomitoku", str(input_dir),
+                "yomitoku", str(args.input_dir),
                 "-f", "pdf",
                 "--pdf_quality", "high",
-                "-o", str(yomitoku_dir),
+                "--outdir", str(args.workdir),
             ],
             check=True,
         )
@@ -180,7 +180,7 @@ def main() -> int:
             with replace_background_with_jbig2(yomi_pdf, tif, otsu_tif) as page_pdf:
                 final.pages.append(page_pdf.pages[0])
 
-    tmp_pdf = final_pdf.with_name(f"{final_pdf.stem}.tmp{final_pdf.suffix}")
+    tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")
     if tmp_pdf.exists(): tmp_pdf.unlink()
 
     final.remove_unreferenced_resources()
@@ -191,9 +191,9 @@ def main() -> int:
         object_stream_mode=pikepdf.ObjectStreamMode.generate,
         deterministic_id=True,
     )
-    if final_pdf.exists(): final_pdf.unlink()
-    tmp_pdf.replace(final_pdf)
-    print(f"Final PDF: {final_pdf}", flush=True)
+    if args.output.exists(): args.output.unlink()
+    tmp_pdf.replace(args.output)
+    print(f"Output PDF: {args.output}", flush=True)
     return 0
 
 if __name__ == "__main__":

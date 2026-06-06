@@ -89,13 +89,26 @@ uv run jbig2_half_pdf.py "10_Scan\<本のフォルダ>\out"
   - 注意: `--out-dir` を入力フォルダの配下にすると YomiToku の再帰処理に巻き込まれるためエラーになる。
 
 ### 元解像度 JBIG2 版
-引数は **`out` を含む親フォルダ**を渡す（スクリプト内部で `<親>\out` を入力として探す）。
+
+`jbig2_pdf.py`（汎用ツール）と `run_jbig2.ps1`（このリポジトリの構成専用ラッパー）に分かれている。
+
+**推奨: ラッパー経由**（本のフォルダを渡すだけ）
 ```powershell
-uv run jbig2_pdf.py "10_Scan\<本のフォルダ>"
+.\run_jbig2.ps1 "10_Scan\<本のフォルダ>"
 ```
-オプション:
-- `--output-name <名前.pdf>`: 最終 PDF 名。省略時は**渡したフォルダ名**。
-- 出力は `<渡したフォルダ>\yomitoku\` 配下に作られる。
+- `<本のフォルダ>\out` を入力 TIFF として処理する。
+- `<本のフォルダ>\out\cache` があれば消す。
+- 出力名は `<本のフォルダ名>.pdf`、出力先は `<本のフォルダ>\yomitoku\`。
+- 最終 PDF は `<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` に出る。
+
+**汎用ツールを直接呼ぶ場合**（任意の TIFF フォルダ）
+```powershell
+uv run jbig2_pdf.py "<TIFFフォルダ>"
+```
+引数・オプション:
+- 第1引数: `*.tif` が直接入ったフォルダ。
+- `--out-dir <出力先>`: 中間ファイルと最終 PDF の出力先。省略時は **TIFF フォルダの親**。
+- `--output-name <名前.pdf>`: 最終 PDF 名（basename のみ）。省略時は `output.pdf`。
 
 ### 処理の流れ（`jbig2_half_pdf.py`）
 1. 入力フォルダの `*.tif` を名前昇順で対象にする。

@@ -18,23 +18,26 @@ YOMITOKU_EXE = os.environ.get("YOMITOKU_EXE") or shutil.which("yomitoku") or "yo
 # jbig2enc のネイティブ実行ファイル。環境変数 JBIG2_EXE 優先、無ければ PATH から解決。
 JBIG2_EXE = os.environ.get("JBIG2_EXE") or shutil.which("jbig2") or "jbig2"
 
-# 使い方（scan プロジェクトのルートで実行）：
-# uv run jbig2_pdf.py "10_Scan\<本のフォルダ>"
-
 # コマンドライン引数を読み取る
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Create a searchable PDF and replace page images with JBIG2 backgrounds."
     )
     parser.add_argument(
-        "scan_dir",
+        "tiff_dir",
         type=Path,
-        help="Scan directory containing an out subdirectory with source TIFF files.",
+        help="Directory containing source TIFF files directly.",
+    )
+    parser.add_argument(
+        "--out-dir",
+        type=Path,
+        default=None,
+        help="Directory for intermediate files and the final PDF. Defaults to the TIFF directory's parent.",
     )
     parser.add_argument(
         "--output-name",
-        default=None,
-        help="Final PDF filename. Defaults to the scan directory name with .pdf.",
+        default="output.pdf",
+        help="Final PDF filename (basename only). Defaults to output.pdf.",
     )
     return parser.parse_args()
 
@@ -173,24 +176,16 @@ def merge_pages(page_pdfs: list[Path], final_pdf: Path) -> None:
 # OCR PDF生成、JBIG2差し替え、結合を順に実行する
 def main() -> int:
     args = parse_args()
-    scan_dir = args.scan_dir
-    input_dir = scan_dir / "out"
-    output_name = Path(args.output_name).name if args.output_name else f"{scan_dir.name}.pdf"
-    out_dir = scan_dir / "yomitoku"
+    input_dir = args.tiff_dir
+    output_name = Path(args.output_name).name
+    out_dir = args.out_dir if args.out_dir is not None else input_dir.parent
 
-    if not scan_dir.is_dir():
-        raise FileNotFoundError(f"Scan directory not found: {scan_dir}")
     if not input_dir.is_dir():
         raise FileNotFoundError(f"Input TIFF directory not found: {input_dir}")
 
     tifs = sorted(input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
         raise RuntimeError(f"No TIFF files found in {input_dir}")
-
-    cache_dir = input_dir / "cache"
-    if cache_dir.exists():
-        print(f"Removing cache: {cache_dir}", flush=True)
-        shutil.rmtree(cache_dir)
 
     final_pdf = out_dir / output_name
     yomitoku_dir = out_dir / "yomitoku_pdf"

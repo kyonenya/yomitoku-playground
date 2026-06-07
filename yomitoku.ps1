@@ -20,8 +20,7 @@ if (Test-Path -LiteralPath $cacheDir -PathType Container) {
 $outputDir = Join-Path $ScanDir "yomitoku"
 $pyArgs = @(
     $inputDir,
-    "--output", (Join-Path $outputDir "$((Get-Item -LiteralPath $ScanDir).Name).pdf"),
-    "--workdir", (Join-Path $outputDir "yomitoku_pdf")
+    "--output", (Join-Path $outputDir "$((Get-Item -LiteralPath $ScanDir).Name).pdf")
 )
 if ($Half) { $pyArgs += "--half" }
 

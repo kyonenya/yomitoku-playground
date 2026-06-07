@@ -1,4 +1,5 @@
 import argparse
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -28,18 +29,28 @@ def parse_args() -> argparse.Namespace:
         help="Final PDF path. Defaults to output.pdf in the current directory.",
     )
     parser.add_argument(
-        "-w",
-        "--workdir",
-        type=Path,
-        default=None,
-        help="Directory for YomiToku OCR PDF work files. Defaults to the input directory's parent.",
-    )
-    parser.add_argument(
         "--half",
         action="store_true",
         help="Downscale each page to half resolution before binarization (smaller PDF).",
     )
     return parser.parse_args()
+
+
+# 単ページTIFF群を1本のマルチページTIFFへ束ねる（YomiToku --combine への入力用）
+def build_combined_tiff(tifs: list[Path], dest: Path) -> None:
+    # 二値化はしない（OCR精度のため元画像のまま渡す）。ページ順は tifs と一致させる
+    images = [Image.open(tif) for tif in tifs]
+    try:
+        first, rest = images[0], images[1:]
+        first.save(
+            dest,
+            save_all=True,
+            append_images=rest,
+            compression="tiff_deflate",
+        )
+    finally:
+        for img in images:
+            img.close()
 
 
 # TIFFをOtsu二値化した1bit TIFFにする。half=True なら二値化前に半分解像度へ縮小する
@@ -96,10 +107,10 @@ def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) 
     page.CropBox = new_box
 
 
-# OCR層を残したままYomiTokuの背景画像XObjectをJBIG2へ差し替えた単ページPDFを返す
-def replace_background_with_jbig2(
-    pdf_path: Path, src_tif: Path, otsu_tif: Path
-) -> pikepdf.Pdf:
+# OCR層を残したまま、結合PDFの1ページの背景画像XObjectをJBIG2へ差し替える
+def replace_page_background_with_jbig2(
+    pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path, otsu_tif: Path
+) -> None:
     JBIG2ENC_EXE = (
         Path(__file__).resolve().parent / "jbig2enc-0.31-Windows-X64-MSVC/bin/jbig2.exe"
     )
@@ -121,16 +132,17 @@ def replace_background_with_jbig2(
     with Image.open(otsu_tif) as img:
         width, height = img.size
 
-    pdf = pikepdf.Pdf.open(pdf_path)
-    page = pdf.pages[0]
     xobjects = page.Resources.get("/XObject", {})
     image_entries = [
         (name, obj)
         for name, obj in xobjects.items()
         if obj.get("/Subtype", None) == pikepdf.Name("/Image")
     ]
-    if len(pdf.pages) != 1 or len(image_entries) != 1:
-        raise RuntimeError(f"Unexpected YomiToku PDF structure: {pdf_path}")
+    if len(image_entries) != 1:
+        raise RuntimeError(
+            f"Expected exactly one image XObject on the page for {src_tif.name}, "
+            f"found {len(image_entries)}"
+        )
 
     image_name, _ = image_entries[0]
     xobjects[image_name] = pikepdf.Stream(
@@ -148,68 +160,86 @@ def replace_background_with_jbig2(
     )
     set_physical_page_size(pdf, page, src_tif)
 
-    return pdf
+
+# 結合TIFFを作りYomiToku --combine で結合PDFを生成して <output>.yomitoku.pdf に残す
+def build_yomitoku_pdf(tifs: list[Path], yomitoku_pdf: Path) -> None:
+    if yomitoku_pdf.exists():
+        print("Reusing existing YomiToku PDF", flush=True)
+        return
+
+    with tempfile.TemporaryDirectory(prefix="yomitoku_combine_") as tmp_dir:
+        tmp_dir_path = Path(tmp_dir)
+        combined_tif = tmp_dir_path / "combined.tif"
+        build_combined_tiff(tifs, combined_tif)
+
+        yomi_outdir = tmp_dir_path / "out"
+        yomi_outdir.mkdir()
+        subprocess.run(
+            [
+                "yomitoku",
+                str(combined_tif),
+                "-f",
+                "pdf",
+                "--pdf_quality",
+                "high",
+                "--combine",
+                "--outdir",
+                str(yomi_outdir),
+            ],
+            check=True,
+        )
+
+        produced = sorted(yomi_outdir.glob("*.pdf"))
+        if len(produced) != 1:
+            raise RuntimeError(
+                f"Expected exactly one YomiToku PDF in {yomi_outdir}, found {len(produced)}"
+            )
+        if yomitoku_pdf.exists():
+            yomitoku_pdf.unlink()
+        shutil.move(str(produced[0]), str(yomitoku_pdf))
 
 
-# OCR PDF生成、JBIG2差し替え、結合を順に実行する
+# OCR PDF生成、JBIG2差し替えを順に実行する
 def main() -> int:
     args = parse_args()
     if not args.input_dir.is_dir():
         raise FileNotFoundError(f"Input TIFF directory not found: {args.input_dir}")
-    if args.workdir is None:
-        args.workdir = args.input_dir.parent
 
     tifs = sorted(args.input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
         raise RuntimeError(f"No TIFF files found in {args.input_dir}")
 
-    for path in (args.output.parent, args.workdir):
-        path.mkdir(parents=True, exist_ok=True)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    yomi_pdfs = [
-        args.workdir / f"{args.input_dir.name}_{tif.stem}_p1.pdf" for tif in tifs
-    ]
-    if all(pdf.exists() for pdf in yomi_pdfs):
-        print("Reusing existing YomiToku PDFs", flush=True)
-    else:
-        subprocess.run(
-            [
-                "yomitoku",
-                str(args.input_dir),
-                "-f",
-                "pdf",
-                "--pdf_quality",
-                "high",
-                "--outdir",
-                str(args.workdir),
-            ],
-            check=True,
+    yomitoku_pdf = args.output.with_name(f"{args.output.stem}.yomitoku.pdf")
+    build_yomitoku_pdf(tifs, yomitoku_pdf)
+
+    with pikepdf.Pdf.open(yomitoku_pdf) as pdf:
+        if len(pdf.pages) != len(tifs):
+            raise RuntimeError(
+                f"YomiToku PDF page count ({len(pdf.pages)}) does not match "
+                f"the number of source TIFFs ({len(tifs)})"
+            )
+
+        with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
+            tmp_dir_path = Path(tmp_dir)
+            for tif, page in zip(tifs, pdf.pages):
+                otsu_tif = tmp_dir_path / tif.name
+                make_otsu_tif(tif, otsu_tif, half=args.half)
+                replace_page_background_with_jbig2(pdf, page, tif, otsu_tif)
+
+        tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")
+        if tmp_pdf.exists():
+            tmp_pdf.unlink()
+
+        pdf.remove_unreferenced_resources()
+        pdf.save(
+            tmp_pdf,
+            compress_streams=True,
+            recompress_flate=True,
+            object_stream_mode=pikepdf.ObjectStreamMode.generate,
+            deterministic_id=True,
         )
-
-    final = pikepdf.Pdf.new()
-    with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
-        tmp_dir_path = Path(tmp_dir)
-        for index, (tif, yomi_pdf) in enumerate(zip(tifs, yomi_pdfs), start=1):
-            if not yomi_pdf.exists():
-                raise FileNotFoundError(f"YomiToku PDF was not created: {yomi_pdf}")
-
-            otsu_tif = tmp_dir_path / tif.name
-            make_otsu_tif(tif, otsu_tif, half=args.half)
-            with replace_background_with_jbig2(yomi_pdf, tif, otsu_tif) as page_pdf:
-                final.pages.append(page_pdf.pages[0])
-
-    tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")
-    if tmp_pdf.exists():
-        tmp_pdf.unlink()
-
-    final.remove_unreferenced_resources()
-    final.save(
-        tmp_pdf,
-        compress_streams=True,
-        recompress_flate=True,
-        object_stream_mode=pikepdf.ObjectStreamMode.generate,
-        deterministic_id=True,
-    )
     if args.output.exists():
         args.output.unlink()
     tmp_pdf.replace(args.output)

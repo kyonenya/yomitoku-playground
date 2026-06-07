@@ -36,9 +36,9 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-# 単ページTIFF群を1本のマルチページTIFFへ束ねる（YomiToku --combine への入力用）
-def build_combined_tiff(tifs: list[Path], dest: Path) -> None:
-    # 二値化はしない（OCR精度のため元画像のまま渡す）。ページ順は tifs と一致させる
+# 単ページTIFF群を1本のマルチページTIFFへ束ねる
+def build_combined_tiff(tifs: list[Path], dest_dir: Path) -> Path:
+    dest = dest_dir / "combined.tif"
     images = [Image.open(tif) for tif in tifs]
     try:
         first, rest = images[0], images[1:]
@@ -51,10 +51,37 @@ def build_combined_tiff(tifs: list[Path], dest: Path) -> None:
     finally:
         for img in images:
             img.close()
+    return dest
 
 
-# TIFFをOtsu二値化した1bit TIFFにする。half=True なら二値化前に半分解像度へ縮小する
-def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
+# 結合TIFFを --combine でOCRする
+def run_yomitoku_combine(combined_tif: Path, dest_dir: Path) -> Path:
+    subprocess.run(
+        [
+            "yomitoku",
+            str(combined_tif),
+            "-f",
+            "pdf",
+            "--pdf_quality",
+            "high",
+            "--combine",
+            "--outdir",
+            str(dest_dir),
+        ],
+        check=True,
+    )
+    # 出力名はtempの親フォルダ名依存なので、生成された唯一のPDFをglobで拾う
+    produced = sorted(dest_dir.glob("*.pdf"))
+    if len(produced) != 1:
+        raise RuntimeError(
+            f"Expected exactly one YomiToku PDF in {dest_dir}, found {len(produced)}"
+        )
+    return produced[0]
+
+
+# TIFFを大津二値化した1bit TIFFにする
+def make_otsu_tif(src: Path, dest_dir: Path, *, half: bool = False) -> Path:
+    dest = dest_dir / src.name
     with Image.open(src) as img:
         gray = img.convert("L")
         dpi = img.info.get("dpi")
@@ -73,6 +100,7 @@ def make_otsu_tif(src: Path, dest: Path, *, half: bool = False) -> None:
     if dest.exists():
         dest.unlink()
     Image.fromarray(bw_img).convert("1").save(dest, compression="group4", dpi=dpi)
+    return dest
 
 
 # TIFFのDPIに合わせてページ内容とページサイズを補正する
@@ -182,36 +210,13 @@ def main() -> int:
         print("Reusing existing YomiToku PDF", flush=True)
     else:
         with tempfile.TemporaryDirectory(prefix="yomitoku_combine_") as tmp_dir:
-            # 単ページTIFF群を1本のマルチページTIFFへ束ね、--combine で1本のPDFを作らせる
-            combined_tif = Path(tmp_dir) / "combined.tif"
-            build_combined_tiff(tifs, combined_tif)
+            # 単ページTIFF群を1本のマルチページTIFFへ束ね、--combine で1本のPDFを作る
+            work_dir = Path(tmp_dir)
+            combined_tif = build_combined_tiff(tifs, work_dir)
+            produced = run_yomitoku_combine(combined_tif, work_dir)
+            shutil.move(str(produced), str(yomitoku_pdf))
 
-            yomi_outdir = Path(tmp_dir) / "out"
-            yomi_outdir.mkdir()
-            subprocess.run(
-                [
-                    "yomitoku",
-                    str(combined_tif),
-                    "-f",
-                    "pdf",
-                    "--pdf_quality",
-                    "high",
-                    "--combine",
-                    "--outdir",
-                    str(yomi_outdir),
-                ],
-                check=True,
-            )
-
-            # 出力名はtempの親フォルダ名依存なので、生成された唯一のPDFをglobで拾う
-            produced = sorted(yomi_outdir.glob("*.pdf"))
-            if len(produced) != 1:
-                raise RuntimeError(
-                    f"Expected exactly one YomiToku PDF in {yomi_outdir}, found {len(produced)}"
-                )
-            shutil.move(str(produced[0]), str(yomitoku_pdf))
-
-    # 各ページの背景画像をJBIG2へ差し替える（OCRテキスト層は残す）
+    # 各ページの背景画像をJBIG2へ差し替える
     with pikepdf.Pdf.open(yomitoku_pdf) as pdf:
         if len(pdf.pages) != len(tifs):
             raise RuntimeError(
@@ -222,13 +227,12 @@ def main() -> int:
         with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
             tmp_dir_path = Path(tmp_dir)
             for tif, page in zip(tifs, pdf.pages):
-                otsu_tif = tmp_dir_path / tif.name
-                make_otsu_tif(tif, otsu_tif, half=args.half)
+                otsu_tif = make_otsu_tif(tif, tmp_dir_path, half=args.half)
                 jbig2 = jbig2_encode(otsu_tif)
                 set_page_jbig2_background(pdf, page, jbig2, otsu_tif)
                 set_physical_page_size(pdf, page, tif)
 
-        # 最終PDFとして保存する（一時ファイル経由で原子的に確定）
+        # 最終PDFとして保存する
         tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")
         if tmp_pdf.exists():
             tmp_pdf.unlink()

@@ -27,9 +27,10 @@ def parse_args() -> argparse.Namespace:
         help="Final PDF path. Defaults to output.pdf in the current directory.",
     )
     parser.add_argument(
-        "--half",
-        action="store_true",
-        help="Downscale each page to half resolution before binarization (smaller PDF).",
+        "--dpi",
+        type=int,
+        default=None,
+        help="Downscale background images to this DPI (never upscales). Defaults to source resolution.",
     )
     return parser.parse_args()
 
@@ -81,15 +82,16 @@ def safe_read_dpi(src: Path) -> tuple[float, float]:
     return float(x_dpi), float(y_dpi)
 
 
-def make_otsu_tif(src: Path, dest_dir: Path, *, half: bool = False) -> Path:
+def make_otsu_tif(src: Path, dest_dir: Path, *, target_dpi: int | None = None) -> Path:
     dest = dest_dir / src.name
-    dpi = safe_read_dpi(src)
+    x_dpi, y_dpi = safe_read_dpi(src)
+    scale = 1.0 if target_dpi is None else min(1.0, target_dpi / x_dpi)
     with Image.open(src) as img:
         gray = img.convert("L")
-        if half:
+        if scale < 1.0:
             width, height = gray.size
             gray = gray.resize(
-                (max(1, width // 2), max(1, height // 2)),
+                (max(1, round(width * scale)), max(1, round(height * scale))),
                 Image.Resampling.LANCZOS,
             )
 
@@ -97,9 +99,10 @@ def make_otsu_tif(src: Path, dest_dir: Path, *, half: bool = False) -> Path:
     _, bw_img = cv2.threshold(
         np.array(gray), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
     )
-    if dest.exists():
-        dest.unlink()
-    Image.fromarray(bw_img).convert("1").save(dest, compression="group4", dpi=dpi)
+    dest.unlink(missing_ok=True)
+    Image.fromarray(bw_img).convert("1").save(
+        dest, compression="group4", dpi=(x_dpi * scale, y_dpi * scale)
+    )
     return dest
 
 
@@ -134,7 +137,7 @@ def correct_physical_page_size(
     page.CropBox = new_box
 
 
-def jbig2_encode(otsu_tif: Path) -> bytes:
+def encode_jbig2(otsu_tif: Path) -> bytes:
     JBIG2ENC_EXE = (
         Path(__file__).resolve().parent / "jbig2enc-0.31-Windows-X64-MSVC/bin/jbig2.exe"
     )
@@ -195,7 +198,7 @@ def main() -> int:
         raise RuntimeError(f"No TIFF files found in {args.input_dir}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    # YomiTokuで検索可能PDFを生成する
+    # generate searchable PDF with YomiToku
     yomitoku_pdf = args.output.with_name(f"{args.output.stem}.yomitoku.pdf")
     if yomitoku_pdf.exists():
         print("Reusing existing YomiToku PDF", flush=True)
@@ -214,8 +217,8 @@ def main() -> int:
 
         with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
             for tif, page in zip(tifs, pdf.pages):
-                otsu_tif = make_otsu_tif(tif, Path(tmp_dir), half=args.half)
-                jbig2 = jbig2_encode(otsu_tif)
+                otsu_tif = make_otsu_tif(tif, Path(tmp_dir), target_dpi=args.dpi)
+                jbig2 = encode_jbig2(otsu_tif)
                 replace_page_jbig2_background(pdf, page, jbig2, otsu_tif)
                 correct_physical_page_size(pdf, page, tif)
 

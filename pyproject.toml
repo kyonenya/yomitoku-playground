@@ -1,7 +1,7 @@
 [project]
 name = "yomitoku-slimpdf"
 version = "0.0.0"
-description = "日本語書籍スキャンの検索可能PDF生成・JBIG2背景圧縮ワークフロー。YomiToku(GPU)で生成し、背景画像を1bit JBIG2に差し替える。"
+description = "YomiTokuで検索可能PDFを生成し、ページ画像を白黒JBIG2に差し替えてサイズを削減する"
 requires-python = ">=3.11,<3.14"
 dependencies = [
     "yomitoku==0.13.0",

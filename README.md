@@ -1,24 +1,41 @@
 # yomitoku-slimpdf
 
-日本語書籍のスキャン画像（TIFF）から、YomiToku の OCR 位置精度を保ったまま、サイズの小さい検索可能 PDF を作るためのワークフロー。
+[YomiToku](https://github.com/kotaro-kinoshita/yomitoku) で出力した検索可能 PDF のファイルサイズを劇的に削減するワークフロー
 
-YomiToku で検索可能 PDF を生成し、背景のページ画像を 1bit JBIG2 に差し替えることで、OCR テキスト層を維持したまま大幅にサイズを削減する（実測で元の約 4% 前後）。
+出力された PDF の背景ページ画像を軽量な白黒 JBIG2 画像に差し替えることで、OCR テキスト層を維持したままファイルサイズを20分の1に削減できる。
 
 推奨環境: Windows + NVIDIA GPU（CUDA）。Python 環境は [uv](https://docs.astral.sh/uv/) で管理する。
 
----
+## 使い方
+
+入力は 1ページ1枚の TIFF を集めたフォルダ。
+処理は `yomitoku.py` が担う。プロジェクトのルートで `uv run` から実行する。
+`--dpi <値>` を付けると背景画像をその DPI へ縮小して PDF を小さくできる（既定は元解像度のまま）。
+
+```powershell
+uv run yomitoku.py "<入力フォルダ>" [--output "<出力PDFパス>"] [--dpi <値>]
+uv run yomitoku.py "<入力フォルダ>" -o "<出力PDFパス>" [--dpi <値>]
+```
+
+引数・オプション:
+- 第1引数: `*.tif` が直接入ったフォルダ。
+- `--output <PDFパス>` / `-o <PDFパス>`: 最終 PDF の出力パス。省略時は実行ディレクトリ直下の `output.pdf`。
+- `--dpi <値>`: 背景画像を指定 DPI へ縮小する（小さくなる）。元解像度を上回る指定では拡大しない。省略時は元解像度。
+
+YomiToku が生成した素の検索可能 PDF は、最終 PDF の隣に `<出力名>.yomitoku.pdf` として残る。これが既に存在する場合は YomiToku の再実行（遅い GPU OCR）をスキップして再利用するので、`--dpi` の付け替えなどを素早く試せる。作り直したいときはこのファイルを消す。
+
+### ラッパー
+`yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・最終 PDF=`<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` を組み立てて渡す薄い PowerShell ラッパー。素の検索可能 PDF は同じ `yomitoku` フォルダに `<本のフォルダ名>.yomitoku.pdf` として残る。`-Dpi <値>` で `--dpi` を渡す。
+```powershell
+.\yomitoku.ps1 <フォルダパス>
+.\yomitoku.ps1 -Dpi <値> <フォルダパス>
+```
 
 ## 必要なもの
 
-| 区分 | ツール | 備考 |
-|---|---|---|
-| パッケージ管理 | uv 0.11+ | Python と依存をすべて管理 |
-| GPU | NVIDIA ドライバ | GeForce 等 |
-| ネイティブ | jbig2enc（`jbig2.exe`, 0.31 x64） | uv 管理外。GitHub Release をルート直下へ展開する |
-
-Python パッケージは `uv sync` が `uv.lock` から自動導入するので個別インストールは不要。
-
----
+- パッケージ管理：uv 0.11+
+- GPU：NVIDIA ドライバ（GeForce 等）
+- ネイティブ：jbig2enc（`jbig2.exe`, 0.31 x64）uv 管理外。GitHub Release をルート直下へ展開する
 
 ## セットアップ手順（Windows + NVIDIA）
 
@@ -40,7 +57,7 @@ uv --version
 
 ### 3. リポジトリを取得して Python 環境を構築
 ```powershell
-git clone <このリポジトリのURL> yomitoku-slimpdf
+git clone git@github.com:kotaro-kinoshita/yomitoku.git
 cd yomitoku-slimpdf
 uv sync
 ```
@@ -68,49 +85,6 @@ Remove-Item "jbig2enc-0.31-Windows-X64-MSVC.zip"
 .\jbig2enc-0.31-Windows-X64-MSVC\bin\jbig2.exe --version
 # -> jbig2enc 0.31
 ```
-
----
-
-## 使い方
-
-入力は 1ページ1枚の TIFF を集めたフォルダ。
-処理は `yomitoku.py` が担う。プロジェクトのルートで `uv run` から実行する。
-`--half` を付けると半分解像度化して PDF をさらに小さくできる（既定は元解像度）。
-
-```powershell
-uv run yomitoku.py "<入力フォルダ>" [--output "<出力PDFパス>"] [--half]
-uv run yomitoku.py "<入力フォルダ>" -o "<出力PDFパス>" [--half]
-```
-
-引数・オプション:
-- 第1引数: `*.tif` が直接入ったフォルダ。
-- `--output <PDFパス>` / `-o <PDFパス>`: 最終 PDF の出力パス。省略時は実行ディレクトリ直下の `output.pdf`。
-- `--half`: 二値化前に各ページを半分解像度へ縮小する（小さくなる）。省略時は元解像度。
-
-YomiToku が生成した素の検索可能 PDF は、最終 PDF の隣に `<出力名>.yomitoku.pdf` として残る。これが既に存在する場合は YomiToku の再実行（遅い GPU OCR）をスキップして再利用するので、`--half` の付け替えなどを素早く試せる。作り直したいときはこのファイルを消す。
-
-### ラッパー
-`yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・最終 PDF=`<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` を組み立てて渡す薄い PowerShell ラッパー。素の検索可能 PDF は同じ `yomitoku` フォルダに `<本のフォルダ名>.yomitoku.pdf` として残る。`-Half` で `--half` を渡す。
-```powershell
-.\yomitoku.ps1 <フォルダパス>
-.\yomitoku.ps1 -Half <フォルダパス>
-```
-
-### 処理の流れ
-1. 入力フォルダの `*.tif` を名前昇順で対象にする。
-2. それらを一時的な 1 本のマルチページ TIFF へ束ね、YomiToku を `--combine` で起動して結合済みの検索可能 PDF を 1 本だけ生成する（`-f pdf --pdf_quality high --combine`）。1 本にまとめることで OCR フォントがページ間で共有され、埋め込みフォントの重複がなくなる。生成 PDF は `<出力名>.yomitoku.pdf` として残し、既存なら再利用する。
-3. その結合 PDF を pikepdf で 1 回だけ開き、ページ数が元 TIFF の枚数と一致するか検証する。
-4. 各ページに対応する元 TIFF を Otsu 二値化した 1bit TIFF にする（`--half` 指定時は二値化前に半分解像度へ縮小）。
-5. ルート直下の `jbig2enc-0.31-Windows-X64-MSVC\bin\jbig2.exe --pdf` で JBIG2 ストリームを作り、各ページの背景画像 XObject だけを差し替える（OCR テキスト層は保持）。
-6. 元 TIFF の DPI を基にページ内容とページサイズ（MediaBox/CropBox）を実寸ポイントへ補正し、ストリーム圧縮・object stream 生成を行って保存する。
-
----
-
-## 仕組みのポイント / 注意
-
-- GPU torch の固定: YomiToku は公開メタデータに CUDA 版 torch の索引を持たないため、`pyproject.toml` で torch/torchvision を cu126 wheel 索引（`[[tool.uv.index]]` + `[tool.uv.sources]`）に固定している。`uv tool install` / `uv run` では `--torch-backend` が使えない（`uv pip` 専用）ため、この方式が確実。
-- PDF 品質: YomiToku は `--pdf_quality high` を使う。`middle` / `low` は OCR テキストの位置がずれることがある。
-- 別 PC への移植: 同じ Windows + NVIDIA 環境なら `git clone` → `uv sync` → jbig2enc 0.31 x64 Release をルート直下へ展開、で同じ構成にできる。GPU が無い PC では cu126 torch は CPU 動作になり非常に遅い。
 
 ## 開発者向け
 

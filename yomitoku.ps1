@@ -2,7 +2,7 @@
 param(
     [Parameter(Mandatory = $true, Position = 0)]
     [string]$ScanDir,
-    [switch]$Half
+    [int]$Dpi = 0
 )
 $ErrorActionPreference = "Stop"
 
@@ -22,6 +22,6 @@ $pyArgs = @(
     $inputDir,
     "--output", (Join-Path $outputDir "$((Get-Item -LiteralPath $ScanDir).Name).pdf")
 )
-if ($Half) { $pyArgs += "--half" }
+if ($Dpi -gt 0) { $pyArgs += @("--dpi", $Dpi) }
 
 uv run yomitoku.py @pyArgs

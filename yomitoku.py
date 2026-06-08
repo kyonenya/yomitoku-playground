@@ -197,9 +197,8 @@ def replace_page_jbig2_background(
     )
 
 
-def save_slim_pdf(pdf: pikepdf.Pdf, output: Path) -> None:
+def save_pdf_atomic(pdf: pikepdf.Pdf, output: Path) -> None:
     tmp_pdf = output.with_name(f"{output.stem}.tmp{output.suffix}")
-    pdf.remove_unreferenced_resources()
     pdf.save(
         tmp_pdf,
         compress_streams=True,
@@ -213,51 +212,62 @@ def save_slim_pdf(pdf: pikepdf.Pdf, output: Path) -> None:
 def main() -> int:
     args = parse_args()
     print("Starting...", flush=True)
-
-    # 入力の単ページTIFFを名前順に集める
+    if args.chunk is not None and args.chunk <= 0:
+        raise RuntimeError("--chunk must be positive")
     tifs = sorted(args.input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
         raise RuntimeError(f"No TIFF files found in {args.input_dir}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
     # --chunk 指定時はページを N 枚ずつに分割する
-    chunk_size = args.chunk if args.chunk and args.chunk > 0 else len(tifs)
-    groups = [tifs[i : i + chunk_size] for i in range(0, len(tifs), chunk_size)]
-    multi = len(groups) > 1
+    chunk_size = args.chunk or len(tifs)
+    chunks = [tifs[i : i + chunk_size] for i in range(0, len(tifs), chunk_size)]
+    multi = len(chunks) > 1
+    final_yomitoku_pdf = args.output.with_name(f"{args.output.stem}.yomitoku.pdf")
 
-    # チャンクごとに YomiToku でOCRし、検索可能PDFを作る
-    yomitoku_pdfs: list[Path] = []
-    for idx, group in enumerate(groups, start=1):
-        # チャンク名には通しページ範囲を使う
-        start = (idx - 1) * chunk_size + 1
-        end = start + len(group) - 1
-        out = (
-            args.output.with_name(
-                f"{args.output.stem}.{start}-{end}{args.output.suffix}"
+    if final_yomitoku_pdf.exists():
+        print(f"reuse {final_yomitoku_pdf.name}", flush=True)
+    else:
+        # チャンクごとに YomiToku でOCRし、検索可能PDFを作る
+        yomitoku_pdfs: list[Path] = []
+        for idx, chunk in enumerate(chunks, start=1):
+            # チャンク名には通しページ範囲を使う
+            start = (idx - 1) * chunk_size + 1
+            end = start + len(chunk) - 1
+            out = (
+                args.output.with_name(
+                    f"{args.output.stem}.{start}-{end}{args.output.suffix}"
+                )
+                if multi
+                else args.output
             )
-            if multi
-            else args.output
-        )
-        combined_tif = out.with_name(f"{out.stem}.combined.tif")
-        yomitoku_pdf = out.with_name(f"{out.stem}.yomitoku.pdf")
-        if yomitoku_pdf.exists():
-            print(f"[{idx}/{len(groups)}] reuse {yomitoku_pdf.name}", flush=True)
-        else:
-            print(f"[{idx}/{len(groups)}] OCR pages {start}-{end}", flush=True)
+            combined_tif = out.with_name(f"{out.stem}.combined.tif")
+            print(f"[{idx}/{len(chunks)}] OCR pages {start}-{end}", flush=True)
             if not combined_tif.exists():
-                combined_tif = combine_tiff(group, out)
+                combined_tif = combine_tiff(chunk, out)
             yomitoku_pdf = build_yomitoku_pdf(combined_tif, out)
-        combined_tif.unlink(missing_ok=True)  # 結合TIFFは巨大なので不要になり次第消す
-        yomitoku_pdfs.append(yomitoku_pdf)
+            # 結合TIFFは巨大なので不要になり次第消す
+            combined_tif.unlink(missing_ok=True)
+            yomitoku_pdfs.append(yomitoku_pdf)
 
-    # 全チャンクのOCR結果を1つにまとめる
-    merged = pikepdf.Pdf.new()
-    for yomitoku_pdf in yomitoku_pdfs:
-        with pikepdf.Pdf.open(yomitoku_pdf) as src:
-            merged.pages.extend(src.pages)
+        # 複数チャンクのOCR結果だけ、最終的なYomiToku PDFとして1つにまとめる
+        if multi:
+            merged_yomitoku = pikepdf.Pdf.new()
+            try:
+                for yomitoku_pdf in yomitoku_pdfs:
+                    with pikepdf.Pdf.open(yomitoku_pdf) as src:
+                        merged_yomitoku.pages.extend(src.pages)
+                save_pdf_atomic(merged_yomitoku, final_yomitoku_pdf)
+            finally:
+                merged_yomitoku.close()
+            for yomitoku_pdf in yomitoku_pdfs:
+                yomitoku_pdf.unlink(missing_ok=True)
+
+    merged = pikepdf.Pdf.open(final_yomitoku_pdf)
     if len(merged.pages) != len(tifs):
+        merged.close()
         raise RuntimeError(
-            f"Page count mismatch: {len(merged.pages)} PDF pages vs {len(tifs)} TIFFs"
+            f"Page count mismatch: {len(merged.pages)} PDF pages vs {len(tifs)} TIFFs."
         )
 
     # 全ページの背景画像をJBIG2へ一括で差し替え、ページサイズを実寸へ補正してから保存する
@@ -269,7 +279,10 @@ def main() -> int:
                 merged, page, encode_jbig2(otsu_tif), otsu_tif
             )
             correct_physical_page_size(merged, page, tif)
-    save_slim_pdf(merged, args.output)
+
+    # 最終PDFとして保存する
+    merged.remove_unreferenced_resources()
+    save_pdf_atomic(merged, args.output)
     merged.close()
 
     print(f"Output PDF: {args.output}", flush=True)

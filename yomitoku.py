@@ -3,7 +3,6 @@ import shutil
 import subprocess
 import tempfile
 from pathlib import Path
-from typing import cast
 
 import cv2
 import numpy as np
@@ -11,8 +10,8 @@ import pikepdf
 from PIL import Image
 
 
-# コマンドライン引数を読み取る
 def parse_args() -> argparse.Namespace:
+    """コマンドライン引数を読み取る"""
     parser = argparse.ArgumentParser(
         description="Create a searchable PDF and replace page images with JBIG2 backgrounds."
     )
@@ -36,8 +35,8 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-# 単ページTIFF群を1本のマルチページTIFFへ束ねる
 def build_combined_tiff(tifs: list[Path], dest_dir: Path) -> Path:
+    """単ページTIFF群を1本のマルチページTIFFへ束ねる"""
     dest = dest_dir / "combined.tif"
     images = [Image.open(tif) for tif in tifs]
     try:
@@ -54,8 +53,8 @@ def build_combined_tiff(tifs: list[Path], dest_dir: Path) -> Path:
     return dest
 
 
-# 結合TIFFを --combine でOCRする
 def run_yomitoku_combine(combined_tif: Path, dest_dir: Path) -> Path:
+    """Yomitokuで結合TIFFにOCRをかける"""
     subprocess.run(
         [
             "yomitoku",
@@ -79,14 +78,22 @@ def run_yomitoku_combine(combined_tif: Path, dest_dir: Path) -> Path:
     return produced[0]
 
 
-# TIFFを大津二値化した1bit TIFFにする
+def read_dpi(src: Path) -> tuple[float, float]:
+    """TIFFの縦横のDPIを取り出す"""
+    with Image.open(src) as img:
+        dpi = img.info.get("dpi")
+    if dpi is None:
+        raise RuntimeError(f"TIFF DPI metadata is missing: {src}")
+    x_dpi, y_dpi = dpi
+    return float(x_dpi), float(y_dpi)
+
+
 def make_otsu_tif(src: Path, dest_dir: Path, *, half: bool = False) -> Path:
+    """TIFFを大津二値化した1bit TIFFにする"""
     dest = dest_dir / src.name
+    dpi = read_dpi(src)
     with Image.open(src) as img:
         gray = img.convert("L")
-        dpi = img.info.get("dpi")
-        if dpi is None:
-            raise RuntimeError(f"TIFF DPI metadata is missing: {src}")
         if half:
             width, height = gray.size
             gray = gray.resize(
@@ -103,15 +110,11 @@ def make_otsu_tif(src: Path, dest_dir: Path, *, half: bool = False) -> Path:
     return dest
 
 
-# TIFFのDPIに合わせてページ内容とページサイズを補正する
 def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) -> None:
-    def dpi_scale(src: Path) -> tuple[float, float]:
-        with Image.open(src) as img:
-            dpi = cast(tuple[float, float], img.info.get("dpi"))
-        x_dpi, y_dpi = dpi
-        return 72 / float(x_dpi), 72 / float(y_dpi)
+    """TIFFのDPIに合わせてPDFのページサイズを補正する"""
+    x_dpi, y_dpi = read_dpi(src_tif)
+    scale_x, scale_y = 72 / x_dpi, 72 / y_dpi
 
-    scale_x, scale_y = dpi_scale(src_tif)
     contents = page.obj.get("/Contents", None)
     if contents is None:
         content_bytes = b""
@@ -135,8 +138,8 @@ def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) 
     page.CropBox = new_box
 
 
-# 1bit TIFFを jbig2.exe でPDF埋め込み用のJBIG2ストリーム（bytes）にする
 def jbig2_encode(otsu_tif: Path) -> bytes:
+    """1bit TIFFをJBIG2に変換する"""
     JBIG2ENC_EXE = (
         Path(__file__).resolve().parent / "jbig2enc-0.31-Windows-X64-MSVC/bin/jbig2.exe"
     )
@@ -157,10 +160,10 @@ def jbig2_encode(otsu_tif: Path) -> bytes:
     return proc.stdout
 
 
-# ページ内の唯一の背景画像XObjectを、JBIG2ストリームの画像へ差し替える（OCR層は残す）
-def set_page_jbig2_background(
+def replace_page_jbig2_background(
     pdf: pikepdf.Pdf, page: pikepdf.Page, jbig2: bytes, otsu_tif: Path
 ) -> None:
+    """ページ内の唯一の背景画像XObjectをJBIG2に差し替える（OCR層は残す）"""
     with Image.open(otsu_tif) as img:
         width, height = img.size
 
@@ -192,25 +195,20 @@ def set_page_jbig2_background(
     )
 
 
-# 入力TIFFを確認し、YomiTokuで結合PDFを作り、背景をJBIG2へ差し替えて保存する
 def main() -> int:
+    """YomiTokuで検索可能PDFを生成し、背景をJBIG2へ差し替えて保存する"""
     args = parse_args()
-
-    # 入力TIFFを確認する
-    if not args.input_dir.is_dir():
-        raise FileNotFoundError(f"Input TIFF directory not found: {args.input_dir}")
     tifs = sorted(args.input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
         raise RuntimeError(f"No TIFF files found in {args.input_dir}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    # YomiToku用の結合PDFを用意する（既存ならOCRをスキップして再利用）
+    # YomiTokuで検索可能PDFを生成する
     yomitoku_pdf = args.output.with_name(f"{args.output.stem}.yomitoku.pdf")
     if yomitoku_pdf.exists():
         print("Reusing existing YomiToku PDF", flush=True)
     else:
         with tempfile.TemporaryDirectory(prefix="yomitoku_combine_") as tmp_dir:
-            # 単ページTIFF群を1本のマルチページTIFFへ束ね、--combine で1本のPDFを作る
             work_dir = Path(tmp_dir)
             combined_tif = build_combined_tiff(tifs, work_dir)
             produced = run_yomitoku_combine(combined_tif, work_dir)
@@ -220,22 +218,18 @@ def main() -> int:
     with pikepdf.Pdf.open(yomitoku_pdf) as pdf:
         if len(pdf.pages) != len(tifs):
             raise RuntimeError(
-                f"YomiToku PDF page count ({len(pdf.pages)}) does not match "
-                f"the number of source TIFFs ({len(tifs)})"
+                f"Page count mismatch: {len(pdf.pages)} PDF pages vs {len(tifs)} TIFFs"
             )
 
         with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
-            tmp_dir_path = Path(tmp_dir)
             for tif, page in zip(tifs, pdf.pages):
-                otsu_tif = make_otsu_tif(tif, tmp_dir_path, half=args.half)
+                otsu_tif = make_otsu_tif(tif, Path(tmp_dir), half=args.half)
                 jbig2 = jbig2_encode(otsu_tif)
-                set_page_jbig2_background(pdf, page, jbig2, otsu_tif)
+                replace_page_jbig2_background(pdf, page, jbig2, otsu_tif)
                 set_physical_page_size(pdf, page, tif)
 
-        # 最終PDFとして保存する
+        # 最終PDFとして保存する（atomic save）
         tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")
-        if tmp_pdf.exists():
-            tmp_pdf.unlink()
         pdf.remove_unreferenced_resources()
         pdf.save(
             tmp_pdf,
@@ -244,8 +238,6 @@ def main() -> int:
             object_stream_mode=pikepdf.ObjectStreamMode.generate,
             deterministic_id=True,
         )
-    if args.output.exists():
-        args.output.unlink()
     tmp_pdf.replace(args.output)
     print(f"Output PDF: {args.output}", flush=True)
     return 0

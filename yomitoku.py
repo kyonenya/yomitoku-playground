@@ -35,8 +35,8 @@ def parse_args() -> argparse.Namespace:
         "--chunk",
         type=int,
         default=None,
-        help="Process pages in chunks of this many to limit YomiToku memory use. "
-        "Defaults to all pages in one chunk.",
+        help="Split pages into this many chunks to limit YomiToku memory use. "
+        "Defaults to one chunk.",
     )
     return parser.parse_args()
 
@@ -219,9 +219,16 @@ def main() -> int:
         raise RuntimeError(f"No TIFF files found in {args.input_dir}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    # --chunk 指定時はページを N 枚ずつに分割する
-    chunk_size = args.chunk or len(tifs)
-    chunks = [tifs[i : i + chunk_size] for i in range(0, len(tifs), chunk_size)]
+    # --chunk 指定時は全ページを N 分割する
+    chunk_count = min(args.chunk or 1, len(tifs))
+    base_chunk_size, extra_pages = divmod(len(tifs), chunk_count)
+    chunks: list[tuple[int, list[Path]]] = []
+    start_index = 0
+    for chunk_index in range(chunk_count):
+        chunk_size = base_chunk_size + (1 if chunk_index < extra_pages else 0)
+        end_index = start_index + chunk_size
+        chunks.append((start_index + 1, tifs[start_index:end_index]))
+        start_index = end_index
     multi = len(chunks) > 1
     final_yomitoku_pdf = args.output.with_name(f"{args.output.stem}.yomitoku.pdf")
 
@@ -230,9 +237,8 @@ def main() -> int:
     else:
         # チャンクごとに YomiToku でOCRし、検索可能PDFを作る
         yomitoku_pdfs: list[Path] = []
-        for idx, chunk in enumerate(chunks, start=1):
+        for idx, (start, chunk) in enumerate(chunks, start=1):
             # チャンク名には通しページ範囲を使う
-            start = (idx - 1) * chunk_size + 1
             end = start + len(chunk) - 1
             out = (
                 args.output.with_name(

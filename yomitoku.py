@@ -1,5 +1,4 @@
 import argparse
-import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -35,8 +34,8 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def combine_tiff(tifs: list[Path], dest_dir: Path) -> Path:
-    dest = dest_dir / "combined.tif"
+def combine_tiff(tifs: list[Path], output: Path) -> Path:
+    dest = output.with_name(f"{output.stem}.combined.tif")
     images = [Image.open(tif) for tif in tifs]
     try:
         first, rest = images[0], images[1:]
@@ -52,7 +51,8 @@ def combine_tiff(tifs: list[Path], dest_dir: Path) -> Path:
     return dest
 
 
-def build_yomitoku_pdf(combined_tif: Path, dest_dir: Path) -> Path:
+def build_yomitoku_pdf(combined_tif: Path, output: Path) -> Path:
+    dest = output.with_name(f"{output.stem}.yomitoku.pdf")
     subprocess.run(
         [
             "yomitoku",
@@ -63,14 +63,15 @@ def build_yomitoku_pdf(combined_tif: Path, dest_dir: Path) -> Path:
             "high",
             "--combine",
             "--outdir",
-            str(dest_dir),
+            str(output.parent),
         ],
         check=True,
     )
-    expected_dest = dest_dir / f"{combined_tif.parent.name}_{combined_tif.stem}.pdf"
-    if not expected_dest.is_file():
-        raise FileNotFoundError(f"YomiToku PDF was not created: {expected_dest}")
-    return expected_dest
+    produced = output.parent / f"{combined_tif.parent.name}_{combined_tif.stem}.pdf"
+    if not produced.is_file():
+        raise FileNotFoundError(f"YomiToku PDF was not created: {produced}")
+    produced.replace(dest)
+    return dest
 
 
 def safe_read_dpi(src: Path) -> tuple[float, float]:
@@ -95,7 +96,6 @@ def make_otsu_tif(src: Path, dest_dir: Path, *, target_dpi: int | None = None) -
                 Image.Resampling.LANCZOS,
             )
 
-    # 大津の二値化
     _, bw_img = cv2.threshold(
         np.array(gray), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
     )
@@ -151,10 +151,7 @@ def encode_jbig2(otsu_tif: Path) -> bytes:
         stderr=subprocess.PIPE,
     )
     if not proc.stdout:
-        raise RuntimeError(
-            "jbig2 produced no stdout for "
-            f"{otsu_tif}: {proc.stderr.decode('utf-8', errors='replace') if proc.stderr else ''}"
-        )
+        raise RuntimeError(f"jbig2 produced no stdout for {otsu_tif}: {proc.stderr.decode('utf-8', errors='replace')}")
     return proc.stdout
 
 
@@ -193,22 +190,24 @@ def replace_page_jbig2_background(
 
 def main() -> int:
     args = parse_args()
+    print("Starting...", flush=True)
     tifs = sorted(args.input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
         raise RuntimeError(f"No TIFF files found in {args.input_dir}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    # generate searchable PDF with YomiToku
+    combined_tif = args.output.with_name(f"{args.output.stem}.combined.tif")
     yomitoku_pdf = args.output.with_name(f"{args.output.stem}.yomitoku.pdf")
     if yomitoku_pdf.exists():
         print("Reusing existing YomiToku PDF", flush=True)
     else:
-        with tempfile.TemporaryDirectory(prefix="yomitoku_combine_") as tmp_dir:
-            combined_tif = combine_tiff(tifs, Path(tmp_dir))
-            produced_pdf = build_yomitoku_pdf(combined_tif, Path(tmp_dir))
-            shutil.move(str(produced_pdf), str(yomitoku_pdf))
+        if combined_tif.exists():
+            print("Reusing existing combined TIFF", flush=True)
+        else:
+            combined_tif = combine_tiff(tifs, args.output)
+            print("combined TIFF created", flush=True)
+        yomitoku_pdf = build_yomitoku_pdf(combined_tif, args.output)
 
-    # 各ページの背景画像をJBIG2へ差し替える
     with pikepdf.Pdf.open(yomitoku_pdf) as pdf:
         if len(pdf.pages) != len(tifs):
             raise RuntimeError(
@@ -222,7 +221,6 @@ def main() -> int:
                 replace_page_jbig2_background(pdf, page, jbig2, otsu_tif)
                 correct_physical_page_size(pdf, page, tif)
 
-        # 最終PDFとして保存する（atomic save）
         tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")
         pdf.remove_unreferenced_resources()
         pdf.save(
@@ -232,7 +230,9 @@ def main() -> int:
             object_stream_mode=pikepdf.ObjectStreamMode.generate,
             deterministic_id=True,
         )
+
     tmp_pdf.replace(args.output)
+    combined_tif.unlink(missing_ok=True)
     print(f"Output PDF: {args.output}", flush=True)
     return 0
 

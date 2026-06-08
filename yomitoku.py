@@ -11,7 +11,6 @@ from PIL import Image
 
 
 def parse_args() -> argparse.Namespace:
-    """コマンドライン引数を読み取る"""
     parser = argparse.ArgumentParser(
         description="Create a searchable PDF and replace page images with JBIG2 backgrounds."
     )
@@ -35,8 +34,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_combined_tiff(tifs: list[Path], dest_dir: Path) -> Path:
-    """単ページTIFF群を1本のマルチページTIFFへ束ねる"""
+def combine_tiff(tifs: list[Path], dest_dir: Path) -> Path:
     dest = dest_dir / "combined.tif"
     images = [Image.open(tif) for tif in tifs]
     try:
@@ -53,8 +51,7 @@ def build_combined_tiff(tifs: list[Path], dest_dir: Path) -> Path:
     return dest
 
 
-def run_yomitoku_combine(combined_tif: Path, dest_dir: Path) -> Path:
-    """Yomitokuで結合TIFFにOCRをかける"""
+def build_yomitoku_pdf(combined_tif: Path, dest_dir: Path) -> Path:
     subprocess.run(
         [
             "yomitoku",
@@ -69,17 +66,13 @@ def run_yomitoku_combine(combined_tif: Path, dest_dir: Path) -> Path:
         ],
         check=True,
     )
-    # 出力名はtempの親フォルダ名依存なので、生成された唯一のPDFをglobで拾う
-    produced = sorted(dest_dir.glob("*.pdf"))
-    if len(produced) != 1:
-        raise RuntimeError(
-            f"Expected exactly one YomiToku PDF in {dest_dir}, found {len(produced)}"
-        )
-    return produced[0]
+    expected_dest = dest_dir / f"{combined_tif.parent.name}_{combined_tif.stem}.pdf"
+    if not expected_dest.is_file():
+        raise FileNotFoundError(f"YomiToku PDF was not created: {expected_dest}")
+    return expected_dest
 
 
-def read_dpi(src: Path) -> tuple[float, float]:
-    """TIFFの縦横のDPIを取り出す"""
+def safe_read_dpi(src: Path) -> tuple[float, float]:
     with Image.open(src) as img:
         dpi = img.info.get("dpi")
     if dpi is None:
@@ -89,9 +82,8 @@ def read_dpi(src: Path) -> tuple[float, float]:
 
 
 def make_otsu_tif(src: Path, dest_dir: Path, *, half: bool = False) -> Path:
-    """TIFFを大津二値化した1bit TIFFにする"""
     dest = dest_dir / src.name
-    dpi = read_dpi(src)
+    dpi = safe_read_dpi(src)
     with Image.open(src) as img:
         gray = img.convert("L")
         if half:
@@ -101,6 +93,7 @@ def make_otsu_tif(src: Path, dest_dir: Path, *, half: bool = False) -> Path:
                 Image.Resampling.LANCZOS,
             )
 
+    # 大津の二値化
     _, bw_img = cv2.threshold(
         np.array(gray), 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
     )
@@ -110,9 +103,10 @@ def make_otsu_tif(src: Path, dest_dir: Path, *, half: bool = False) -> Path:
     return dest
 
 
-def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) -> None:
-    """TIFFのDPIに合わせてPDFのページサイズを補正する"""
-    x_dpi, y_dpi = read_dpi(src_tif)
+def correct_physical_page_size(
+    pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path
+) -> None:
+    x_dpi, y_dpi = safe_read_dpi(src_tif)
     scale_x, scale_y = 72 / x_dpi, 72 / y_dpi
 
     contents = page.obj.get("/Contents", None)
@@ -128,18 +122,19 @@ def set_physical_page_size(pdf: pikepdf.Pdf, page: pikepdf.Page, src_tif: Path) 
     height = float(media_box[3]) - float(media_box[1])
     new_box = pikepdf.Array([0, 0, width * scale_x, height * scale_y])
 
-    wrapped = (
-        f"q\n{scale_x:.12g} 0 0 {scale_y:.12g} 0 0 cm\n".encode("ascii")
-        + content_bytes
-        + b"\nQ\n"
+    page.Contents = pikepdf.Stream(
+        pdf,
+        (
+            f"q\n{scale_x:.12g} 0 0 {scale_y:.12g} 0 0 cm\n".encode("ascii")
+            + content_bytes
+            + b"\nQ\n"
+        ),
     )
-    page.Contents = pikepdf.Stream(pdf, wrapped)
     page.MediaBox = new_box
     page.CropBox = new_box
 
 
 def jbig2_encode(otsu_tif: Path) -> bytes:
-    """1bit TIFFをJBIG2に変換する"""
     JBIG2ENC_EXE = (
         Path(__file__).resolve().parent / "jbig2enc-0.31-Windows-X64-MSVC/bin/jbig2.exe"
     )
@@ -163,7 +158,6 @@ def jbig2_encode(otsu_tif: Path) -> bytes:
 def replace_page_jbig2_background(
     pdf: pikepdf.Pdf, page: pikepdf.Page, jbig2: bytes, otsu_tif: Path
 ) -> None:
-    """ページ内の唯一の背景画像XObjectをJBIG2に差し替える（OCR層は残す）"""
     with Image.open(otsu_tif) as img:
         width, height = img.size
 
@@ -175,8 +169,7 @@ def replace_page_jbig2_background(
     ]
     if len(image_entries) != 1:
         raise RuntimeError(
-            f"Expected exactly one image XObject on the page for {otsu_tif.name}, "
-            f"found {len(image_entries)}"
+            f"Expected 1 image XObject on {otsu_tif.name}, found {len(image_entries)}"
         )
 
     image_name, _ = image_entries[0]
@@ -196,7 +189,6 @@ def replace_page_jbig2_background(
 
 
 def main() -> int:
-    """YomiTokuで検索可能PDFを生成し、背景をJBIG2へ差し替えて保存する"""
     args = parse_args()
     tifs = sorted(args.input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
@@ -209,10 +201,9 @@ def main() -> int:
         print("Reusing existing YomiToku PDF", flush=True)
     else:
         with tempfile.TemporaryDirectory(prefix="yomitoku_combine_") as tmp_dir:
-            work_dir = Path(tmp_dir)
-            combined_tif = build_combined_tiff(tifs, work_dir)
-            produced = run_yomitoku_combine(combined_tif, work_dir)
-            shutil.move(str(produced), str(yomitoku_pdf))
+            combined_tif = combine_tiff(tifs, Path(tmp_dir))
+            produced_pdf = build_yomitoku_pdf(combined_tif, Path(tmp_dir))
+            shutil.move(str(produced_pdf), str(yomitoku_pdf))
 
     # 各ページの背景画像をJBIG2へ差し替える
     with pikepdf.Pdf.open(yomitoku_pdf) as pdf:
@@ -226,7 +217,7 @@ def main() -> int:
                 otsu_tif = make_otsu_tif(tif, Path(tmp_dir), half=args.half)
                 jbig2 = jbig2_encode(otsu_tif)
                 replace_page_jbig2_background(pdf, page, jbig2, otsu_tif)
-                set_physical_page_size(pdf, page, tif)
+                correct_physical_page_size(pdf, page, tif)
 
         # 最終PDFとして保存する（atomic save）
         tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")

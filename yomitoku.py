@@ -31,6 +31,13 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Downscale background images to this DPI (never upscales). Defaults to source resolution.",
     )
+    parser.add_argument(
+        "--chunk",
+        type=int,
+        default=None,
+        help="Process pages in chunks of this many to limit YomiToku memory use. "
+        "Defaults to all pages in one chunk.",
+    )
     return parser.parse_args()
 
 
@@ -151,7 +158,9 @@ def encode_jbig2(otsu_tif: Path) -> bytes:
         stderr=subprocess.PIPE,
     )
     if not proc.stdout:
-        raise RuntimeError(f"jbig2 produced no stdout for {otsu_tif}: {proc.stderr.decode('utf-8', errors='replace')}")
+        raise RuntimeError(
+            f"jbig2 produced no stdout for {otsu_tif}: {proc.stderr.decode('utf-8', errors='replace')}"
+        )
     return proc.stdout
 
 
@@ -188,51 +197,81 @@ def replace_page_jbig2_background(
     )
 
 
+def save_slim_pdf(pdf: pikepdf.Pdf, output: Path) -> None:
+    tmp_pdf = output.with_name(f"{output.stem}.tmp{output.suffix}")
+    pdf.remove_unreferenced_resources()
+    pdf.save(
+        tmp_pdf,
+        compress_streams=True,
+        recompress_flate=True,
+        object_stream_mode=pikepdf.ObjectStreamMode.generate,
+        deterministic_id=True,
+    )
+    tmp_pdf.replace(output)
+
+
 def main() -> int:
     args = parse_args()
     print("Starting...", flush=True)
+
+    # 入力の単ページTIFFを名前順に集める
     tifs = sorted(args.input_dir.glob("*.tif"), key=lambda p: p.name)
     if not tifs:
         raise RuntimeError(f"No TIFF files found in {args.input_dir}")
     args.output.parent.mkdir(parents=True, exist_ok=True)
 
-    combined_tif = args.output.with_name(f"{args.output.stem}.combined.tif")
-    yomitoku_pdf = args.output.with_name(f"{args.output.stem}.yomitoku.pdf")
-    if yomitoku_pdf.exists():
-        print("Reusing existing YomiToku PDF", flush=True)
-    else:
-        if combined_tif.exists():
-            print("Reusing existing combined TIFF", flush=True)
-        else:
-            combined_tif = combine_tiff(tifs, args.output)
-            print("combined TIFF created", flush=True)
-        yomitoku_pdf = build_yomitoku_pdf(combined_tif, args.output)
+    # --chunk 指定時はページを N 枚ずつに分割する
+    chunk_size = args.chunk if args.chunk and args.chunk > 0 else len(tifs)
+    groups = [tifs[i : i + chunk_size] for i in range(0, len(tifs), chunk_size)]
+    multi = len(groups) > 1
 
-    with pikepdf.Pdf.open(yomitoku_pdf) as pdf:
-        if len(pdf.pages) != len(tifs):
-            raise RuntimeError(
-                f"Page count mismatch: {len(pdf.pages)} PDF pages vs {len(tifs)} TIFFs"
+    # チャンクごとに YomiToku でOCRし、検索可能PDFを作る
+    yomitoku_pdfs: list[Path] = []
+    for idx, group in enumerate(groups, start=1):
+        # チャンク名には通しページ範囲を使う
+        start = (idx - 1) * chunk_size + 1
+        end = start + len(group) - 1
+        out = (
+            args.output.with_name(
+                f"{args.output.stem}.{start}-{end}{args.output.suffix}"
             )
+            if multi
+            else args.output
+        )
+        combined_tif = out.with_name(f"{out.stem}.combined.tif")
+        yomitoku_pdf = out.with_name(f"{out.stem}.yomitoku.pdf")
+        if yomitoku_pdf.exists():
+            print(f"[{idx}/{len(groups)}] reuse {yomitoku_pdf.name}", flush=True)
+        else:
+            print(f"[{idx}/{len(groups)}] OCR pages {start}-{end}", flush=True)
+            if not combined_tif.exists():
+                combined_tif = combine_tiff(group, out)
+            yomitoku_pdf = build_yomitoku_pdf(combined_tif, out)
+        combined_tif.unlink(missing_ok=True)  # 結合TIFFは巨大なので不要になり次第消す
+        yomitoku_pdfs.append(yomitoku_pdf)
 
-        with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
-            for tif, page in zip(tifs, pdf.pages):
-                otsu_tif = make_otsu_tif(tif, Path(tmp_dir), target_dpi=args.dpi)
-                jbig2 = encode_jbig2(otsu_tif)
-                replace_page_jbig2_background(pdf, page, jbig2, otsu_tif)
-                correct_physical_page_size(pdf, page, tif)
-
-        tmp_pdf = args.output.with_name(f"{args.output.stem}.tmp{args.output.suffix}")
-        pdf.remove_unreferenced_resources()
-        pdf.save(
-            tmp_pdf,
-            compress_streams=True,
-            recompress_flate=True,
-            object_stream_mode=pikepdf.ObjectStreamMode.generate,
-            deterministic_id=True,
+    # 全チャンクのOCR結果を1つにまとめる
+    merged = pikepdf.Pdf.new()
+    for yomitoku_pdf in yomitoku_pdfs:
+        with pikepdf.Pdf.open(yomitoku_pdf) as src:
+            merged.pages.extend(src.pages)
+    if len(merged.pages) != len(tifs):
+        raise RuntimeError(
+            f"Page count mismatch: {len(merged.pages)} PDF pages vs {len(tifs)} TIFFs"
         )
 
-    tmp_pdf.replace(args.output)
-    combined_tif.unlink(missing_ok=True)
+    # 全ページの背景画像をJBIG2へ一括で差し替え、ページサイズを実寸へ補正してから保存する
+    print(f"Replacing backgrounds with JBIG2 ({len(tifs)} pages)", flush=True)
+    with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
+        for tif, page in zip(tifs, merged.pages):
+            otsu_tif = make_otsu_tif(tif, Path(tmp_dir), target_dpi=args.dpi)
+            replace_page_jbig2_background(
+                merged, page, encode_jbig2(otsu_tif), otsu_tif
+            )
+            correct_physical_page_size(merged, page, tif)
+    save_slim_pdf(merged, args.output)
+    merged.close()
+
     print(f"Output PDF: {args.output}", flush=True)
     return 0
 

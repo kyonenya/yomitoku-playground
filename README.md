@@ -11,24 +11,27 @@
 入力は 1ページ1枚の TIFF を集めたフォルダ。
 処理は `yomitoku.py` が担う。プロジェクトのルートで `uv run` から実行する。
 `--dpi <値>` を付けると背景画像をその DPI へ縮小して PDF を小さくできる（既定は元解像度のまま）。
+`--chunk <分割数>` を付けると、YomiToku のOCR処理を指定数に分割してメモリ使用量を抑えられる。
 
 ```powershell
-uv run yomitoku.py "<入力フォルダ>" [--output "<出力PDFパス>"] [--dpi <値>]
-uv run yomitoku.py "<入力フォルダ>" -o "<出力PDFパス>" [--dpi <値>]
+uv run yomitoku.py "<入力フォルダ>" [--output "<出力PDFパス>"] [--dpi <値>] [--chunk <分割数>]
+uv run yomitoku.py "<入力フォルダ>" -o "<出力PDFパス>" [--dpi <値>] [--chunk <分割数>]
 ```
 
 引数・オプション:
 - 第1引数: `*.tif` が直接入ったフォルダ。
 - `--output <PDFパス>` / `-o <PDFパス>`: 最終 PDF の出力パス。省略時は実行ディレクトリ直下の `output.pdf`。
 - `--dpi <値>`: 背景画像を指定 DPI へ縮小する（小さくなる）。元解像度を上回る指定では拡大しない。省略時は元解像度。
+- `--chunk <分割数>`: YomiToku のOCR処理を指定数に分割する。例: 527ページで `--chunk 3` なら、おおむね3等分して処理する。省略時は1分割。
 
 YomiToku が生成した素の検索可能 PDF は、最終 PDF の隣に `<出力名>.yomitoku.pdf` として残る。これが既に存在する場合は YomiToku の再実行（遅い GPU OCR）をスキップして再利用するので、`--dpi` の付け替えなどを素早く試せる。作り直したいときはこのファイルを消す。
 
 ### ラッパー
-`yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・最終 PDF=`<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` を組み立てて渡す薄い PowerShell ラッパー。素の検索可能 PDF は同じ `yomitoku` フォルダに `<本のフォルダ名>.yomitoku.pdf` として残る。`-Dpi <値>` で `--dpi` を渡す。
+`yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・最終 PDF=`<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` を組み立てて渡す薄い PowerShell ラッパー。素の検索可能 PDF は同じ `yomitoku` フォルダに `<本のフォルダ名>.yomitoku.pdf` として残る。`-Dpi <値>` で `--dpi`、`-Chunk <分割数>` で `--chunk` を渡す。
 ```powershell
 .\yomitoku.ps1 <フォルダパス>
 .\yomitoku.ps1 -Dpi <値> <フォルダパス>
+.\yomitoku.ps1 -Chunk <分割数> <フォルダパス>
 ```
 
 ## 必要なもの

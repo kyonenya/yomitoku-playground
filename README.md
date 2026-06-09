@@ -2,9 +2,7 @@
 
 [YomiToku](https://github.com/kotaro-kinoshita/yomitoku) で出力した検索可能 PDF のファイルサイズを劇的に削減するワークフロー
 
-出力された PDF の背景ページ画像を軽量な白黒 JBIG2 画像に差し替えることで、OCR テキスト層を維持したままファイルサイズを20分の1に削減できる。
-
-推奨環境: Windows + NVIDIA GPU
+出力された PDF の背景ページ画像を軽量な白黒 JBIG2 画像に差し替えることで、OCR テキスト層を維持したままファイルサイズを20分の1以下に削減できる。
 
 ## サイズ比較
 
@@ -12,8 +10,8 @@
 
 | 内容 | サイズ | YomiToku素PDF比 |
 |---|---:|---:|
-| YomiToku が生成した素の PDF（[`sample.yomitoku.pdf`](sample/yomitoku_expected/sample.yomitoku.pdf)） | 25.7 MB | 100% |
-| 背景画像を JBIG2 に差し替えた PDF（[`sample.pdf`](sample/yomitoku_expected/sample.pdf)） | 895 KB | 3.5% |
+| YomiToku 生成 PDF（[`sample.yomitoku.pdf`](sample/yomitoku_expected/sample.yomitoku.pdf)） | 25.7 MB | 100% |
+| JBIG2 軽量化済 PDF（[`sample.pdf`](sample/yomitoku_expected/sample.pdf)） | 895 KB | 3.5% |
 
 ## 使い方
 
@@ -36,22 +34,26 @@ uv run yomi.py "<入力フォルダ>" -o "<出力PDFパス>" [--dpi <値>] [--ch
 
 YomiToku が生成した素の検索可能 PDF は、最終 PDF の隣に `<出力名>.yomitoku.pdf` として残る。これが既に存在する場合は YomiToku の再実行（遅い GPU OCR）をスキップして再利用するので、`--dpi` の付け替えなどを素早く試せる。作り直したいときはこのファイルを消す。
 
-### ラッパー
+### ラッパースクリプト
 
 `yomi.ps1` は `<本のフォルダ>\out` を入力に、最終 PDF=`<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` を組み立てて渡す薄い PowerShell ラッパー。素の検索可能 PDF は同じ `yomitoku` フォルダに `<本のフォルダ名>.yomitoku.pdf` として残る。`-Dpi <値>` で `--dpi`、`-Chunk <分割数>` で `--chunk` を渡す。
 
 ```powershell
 .\yomi.ps1 sample
+```
+```powershell
 .\yomi.ps1 sample -Dpi 300 -Chunk 2
 ```
 
 ## 必要なもの
 
+推奨環境: Windows + NVIDIA GPU
+
 - パッケージ管理：[uv](https://github.com/astral-sh/uv) 0.11+
 - GPU：NVIDIA ドライバ（GeForce 等）
 - ネイティブ：[jbig2enc](https://github.com/agl/jbig2enc)（`jbig2.exe`, 0.31 x64）uv 管理外。GitHub Release をルート直下へ展開する
 
-## セットアップ手順（Windows + NVIDIA）
+## セットアップ手順
 
 ### 1. NVIDIA ドライバ
 
@@ -65,7 +67,7 @@ GPU 名とドライバ版が表示されればよい（例: RTX 4070 Ti / 591.86
 
 ### 2. PyTorch CUDA 依存を更新する
 
-`pyproject.toml` の PyTorch CUDA 依存（`torch`, `torchvision`, `pytorch-cu126`）を自身の GPU に合うように更新する。
+`pyproject.toml` の PyTorch CUDA 依存関係を自身の GPU に合うように更新する。
 この手順はエージェント用スキルとして [`update-pytorch-cuda-deps/SKILL.md`](.agents/skills/update-pytorch-cuda-deps/SKILL.md) を用意してある。
 
 Codex / Claude Code など任意のエージェントに SKILL.md を読ませて実行する。
@@ -86,10 +88,10 @@ winget install --id=astral-sh.uv -e
 uv --version
 ```
 
-### 4. リポジトリを取得して Python 環境を構築
+### 4. 当リポジトリを取得して Python 環境を構築
 
 ```powershell
-git clone git@github.com:kotaro-kinoshita/yomitoku.git
+git clone git@github.com:kyonenya/yomitoku-slimpdf.git
 cd yomitoku-slimpdf
 uv sync
 ```
@@ -104,7 +106,7 @@ uv sync
 
 ### 5. jbig2enc をルート直下へ展開
 
-JBIG2 圧縮に使うネイティブツール [jbig2enc](https://github.com/agl/jbig2enc) 64bit 版を GitHub Release からプロジェクトルート直下に展開する。
+JBIG2 圧縮に使うネイティブツール [jbig2enc](https://github.com/agl/jbig2enc) 64bit 版をGitHub Release からプロジェクトルート直下に展開する。
 
 プロジェクトルートで実行:
 

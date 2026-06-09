@@ -1,0 +1,2444 @@
+<project layoutDirection="LTR" outputDirectory="out" version="3">
+  <directories>
+    <directory path="." id="1"/>
+  </directories>
+  <files>
+    <file dirId="1" name="sample_ページ_01.tiff" id="2"/>
+    <file dirId="1" name="sample_ページ_02.tiff" id="5"/>
+    <file dirId="1" name="sample_ページ_03.tiff" id="8"/>
+    <file dirId="1" name="sample_ページ_04.tiff" id="11"/>
+    <file dirId="1" name="sample_ページ_05.tiff" id="14"/>
+    <file dirId="1" name="sample_ページ_06.tiff" id="17"/>
+    <file dirId="1" name="sample_ページ_07.tiff" id="20"/>
+    <file dirId="1" name="sample_ページ_08.tiff" id="23"/>
+    <file dirId="1" name="sample_ページ_09.tiff" id="26"/>
+    <file dirId="1" name="sample_ページ_10.tiff" id="29"/>
+    <file dirId="1" name="sample_ページ_11.tiff" id="32"/>
+    <file dirId="1" name="sample_ページ_12.tiff" id="35"/>
+    <file dirId="1" name="sample_ページ_13.tiff" id="38"/>
+    <file dirId="1" name="sample_ページ_14.tiff" id="41"/>
+    <file dirId="1" name="sample_ページ_15.tiff" id="44"/>
+    <file dirId="1" name="sample_ページ_16.tiff" id="47"/>
+    <file dirId="1" name="sample_ページ_17.tiff" id="50"/>
+    <file dirId="1" name="sample_ページ_18.tiff" id="53"/>
+    <file dirId="1" name="sample_ページ_19.tiff" id="56"/>
+  </files>
+  <images>
+    <image fileId="2" id="3" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="5" id="6" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="8" id="9" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="11" id="12" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="14" id="15" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="17" id="18" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="20" id="21" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="23" id="24" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="26" id="27" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="29" id="30" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="32" id="33" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="35" id="36" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="38" id="39" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="41" id="42" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="44" id="45" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="47" id="48" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="50" id="51" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="53" id="54" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+    <image fileId="56" id="57" subPages="1" fileImage="0">
+      <size width="828" height="1167"/>
+      <dpi vertical="200" horizontal="200"/>
+    </image>
+  </images>
+  <pages>
+    <page imageId="3" id="4" subPage="single" selected="selected"/>
+    <page imageId="6" id="7" subPage="single"/>
+    <page imageId="9" id="10" subPage="single"/>
+    <page imageId="12" id="13" subPage="single"/>
+    <page imageId="15" id="16" subPage="single"/>
+    <page imageId="18" id="19" subPage="single"/>
+    <page imageId="21" id="22" subPage="single"/>
+    <page imageId="24" id="25" subPage="single"/>
+    <page imageId="27" id="28" subPage="single"/>
+    <page imageId="30" id="31" subPage="single"/>
+    <page imageId="33" id="34" subPage="single"/>
+    <page imageId="36" id="37" subPage="single"/>
+    <page imageId="39" id="40" subPage="single"/>
+    <page imageId="42" id="43" subPage="single"/>
+    <page imageId="45" id="46" subPage="single"/>
+    <page imageId="48" id="49" subPage="single"/>
+    <page imageId="51" id="52" subPage="single"/>
+    <page imageId="54" id="55" subPage="single"/>
+    <page imageId="57" id="58" subPage="single"/>
+  </pages>
+  <file-name-disambiguation>
+    <mapping label="0" file="2"/>
+    <mapping label="0" file="5"/>
+    <mapping label="0" file="8"/>
+    <mapping label="0" file="11"/>
+    <mapping label="0" file="14"/>
+    <mapping label="0" file="17"/>
+    <mapping label="0" file="20"/>
+    <mapping label="0" file="23"/>
+    <mapping label="0" file="26"/>
+    <mapping label="0" file="29"/>
+    <mapping label="0" file="32"/>
+    <mapping label="0" file="35"/>
+    <mapping label="0" file="38"/>
+    <mapping label="0" file="41"/>
+    <mapping label="0" file="44"/>
+    <mapping label="0" file="47"/>
+    <mapping label="0" file="50"/>
+    <mapping label="0" file="53"/>
+    <mapping label="0" file="56"/>
+  </file-name-disambiguation>
+  <filters>
+    <fix-orientation>
+      <image-settings>
+        <page id="4">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="7">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="10">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="13">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="16">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="19">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="22">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="25">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="28">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="31">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="34">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="37">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="40">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="43">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="46">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="49">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="52">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="55">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="58">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+      </image-settings>
+    </fix-orientation>
+    <page-split defaultLayoutType="auto-detect">
+      <image id="3" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="6" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="9" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="12" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="15" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="18" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="21" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="24" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="27" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="30" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="33" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="36" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="39" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="42" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="45" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="48" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="51" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="54" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+      <image id="57" layoutType="auto-detect">
+        <params mode="auto">
+          <pages type="single-uncut">
+            <outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </outline>
+          </pages>
+          <dependencies>
+            <rotation degrees="0"/>
+            <size width="828" height="1167"/>
+            <layoutType>auto-detect</layoutType>
+          </dependencies>
+        </params>
+      </image>
+    </page-split>
+    <deskew algoContentBased="1">
+      <page id="4">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="7">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="10">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="13">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="16">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="19">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="22">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="25">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="28">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="31">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="34">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="37">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="40">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="43">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="46">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="49">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="52">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="55">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <page id="58">
+        <params oblique="0" angle="-2.42861286636753e-17" mode="manual">
+          <dependencies>
+            <rotation degrees="0"/>
+            <page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </page-outline>
+          </dependencies>
+        </params>
+      </page>
+      <image-settings>
+        <page id="4">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="7">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="10">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="13">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="16">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="19">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="22">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="25">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="28">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="31">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="34">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="37">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="40">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="43">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="46">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="49">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="52">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="55">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+        <page id="58">
+          <image-params bwThreshold="127" blackOnWhite="1"/>
+        </page>
+      </image-settings>
+    </deskew>
+    <select-content pageDetectionTolerance="0.1">
+      <page id="4">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="7">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="10">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="13">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="16">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="19">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="22">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="25">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="28">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="31">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="34">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="37">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="40">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="43">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="46">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="49">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="52">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="55">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+      <page id="58">
+        <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0">
+          <content-rect x="0" width="828" y="0" height="1167"/>
+          <page-rect x="0" width="828" y="0" height="1167"/>
+          <content-size-mm width="105.1562103124206" height="148.2092964185928"/>
+          <dependencies>
+            <rotated-page-outline>
+              <point x="0" y="0"/>
+              <point x="828" y="0"/>
+              <point x="828" y="1167"/>
+              <point x="0" y="1167"/>
+              <point x="0" y="0"/>
+            </rotated-page-outline>
+            <params contentDetectionMode="disabled" pageDetectionMode="disabled" fineTuneCorners="0"/>
+          </dependencies>
+        </params>
+      </page>
+    </select-content>
+    <page-layout showMiddleRect="1">
+      <page id="4">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="7">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="10">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="13">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="16">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="19">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="22">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="25">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="28">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="31">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="34">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="37">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="40">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="43">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="46">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="49">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="52">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="55">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+      <page id="58">
+        <params autoMargins="1">
+          <hardMarginsMM right="0" top="0" bottom="0" left="0"/>
+          <pageRect x="0" width="828" y="0" height="1167"/>
+          <contentRect x="0" width="828" y="0" height="1167"/>
+          <contentSizeMM width="105.1562103124206" height="148.2092964185928"/>
+          <alignment null="0" vert="center" hor="center"/>
+        </params>
+      </page>
+    </page-layout>
+    <output>
+      <page id="4">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="-10" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="-10" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="48226" mtime="1780984171"/>
+          <file size="44584" mtime="1780985972"/>
+          <speckles size="628" mtime="1780985972"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="7">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51188" mtime="1780984172"/>
+          <file size="48896" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="10">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="50728" mtime="1780984172"/>
+          <file size="48722" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="13">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="49568" mtime="1780984172"/>
+          <file size="47158" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="16">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51036" mtime="1780984172"/>
+          <file size="48890" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="19">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51432" mtime="1780984172"/>
+          <file size="49550" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="22">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51110" mtime="1780984172"/>
+          <file size="48706" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="25">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51598" mtime="1780984172"/>
+          <file size="49860" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="28">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="50298" mtime="1780984172"/>
+          <file size="48234" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="31">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51742" mtime="1780984172"/>
+          <file size="50320" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="34">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51550" mtime="1780984172"/>
+          <file size="49114" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="37">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="52134" mtime="1780984172"/>
+          <file size="50752" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="40">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51912" mtime="1780984172"/>
+          <file size="50746" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="43">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51328" mtime="1780984172"/>
+          <file size="49606" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="46">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="50040" mtime="1780984172"/>
+          <file size="47540" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="49">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51278" mtime="1780984172"/>
+          <file size="49370" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="52">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="50536" mtime="1780984172"/>
+          <file size="48388" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="55">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="51104" mtime="1780984172"/>
+          <file size="48780" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+      <page id="58">
+        <zones/>
+        <fill-zones/>
+        <params depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+          <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+          <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+          <dpi vertical="600" horizontal="600"/>
+          <color-params colorMode="bw">
+            <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+              <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+            </color-or-grayscale>
+            <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+              <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+            </bw>
+          </color-params>
+          <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+        </params>
+        <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+        <output-params>
+          <image depthPerception="2" blackOnWhite="1" despeckleLevel="1">
+            <size width="2484" height="3501"/>
+            <content-rect x="0" width="2484" y="0" height="3501"/>
+            <crop-area>
+              <point x="0" y="0"/>
+              <point x="2484" y="0"/>
+              <point x="2484" y="3501"/>
+              <point x="0" y="3501"/>
+              <point x="0" y="0"/>
+            </crop-area>
+            <partial-xform>
+              <m11>1</m11>
+              <m12>0</m12>
+              <m21>0</m21>
+              <m22>1</m22>
+            </partial-xform>
+            <dpi vertical="600" horizontal="600"/>
+            <color-params colorMode="bw">
+              <color-or-grayscale fillOffcut="1" fillMargins="1" fillingColor="background" wienerCoef="0" normalizeIlluminationColor="0" wienerWinSize="5">
+                <posterization-options normalizationEnabled="0" enabled="0" forceBlackAndWhite="1" level="4"/>
+              </color-or-grayscale>
+              <bw normalizeIlluminationBW="1" savitzkyGolaySmoothing="1" wolfUpperBound="254" sauvolaCoef="0.34" binarizationMethod="otsu" windowSize="200" wolfCoef="0.3" thresholdAdj="0" wolfLowerBound="1" morphologicalSmoothing="1">
+                <color-segmenter-options noiseReduction="7" blueThresholdAdjustment="0" greenThresholdAdjustment="0" enabled="0" redThresholdAdjustment="0"/>
+              </bw>
+            </color-params>
+            <splitting splittingMode="bw" originalBackground="0" splitOutput="0"/>
+            <picture-shape-options sensitivity="100" higherSearchSensitivity="0" pictureShape="free"/>
+            <dewarping-options postDeskew="1" postDeskewAngle="0" mode="off"/>
+            <processing-params blackOnWhiteSetManually="0" autoZonesFound="0"/>
+          </image>
+          <source_file size="48006" mtime="1780984172"/>
+          <file size="43824" mtime="1780985968"/>
+          <speckles size="628" mtime="1780985968"/>
+          <zones/>
+          <fill-zones/>
+        </output-params>
+      </page>
+    </output>
+  </filters>
+</project>

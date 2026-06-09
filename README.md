@@ -4,18 +4,27 @@
 
 出力された PDF の背景ページ画像を軽量な白黒 JBIG2 画像に差し替えることで、OCR テキスト層を維持したままファイルサイズを20分の1に削減できる。
 
-推奨環境: Windows + NVIDIA GPU（CUDA）。Python 環境は [uv](https://docs.astral.sh/uv/) で管理する。
+推奨環境: Windows + NVIDIA GPU
+
+## サイズ比較
+
+このリポジトリに入っているサンプルを処理した例。
+
+| 内容 | サイズ | YomiToku素PDF比 |
+|---|---:|---:|
+| YomiToku が生成した素の PDF（[`sample.yomitoku.pdf`](sample/yomitoku_expected/sample.yomitoku.pdf)） | 25.7 MB | 100% |
+| 背景画像を JBIG2 に差し替えた PDF（[`sample.pdf`](sample/yomitoku_expected/sample.pdf)） | 895 KB | 3.5% |
 
 ## 使い方
 
 入力は 1ページ1枚の TIFF を集めたフォルダ。
-処理は `yomitoku.py` が担う。プロジェクトのルートで `uv run` から実行する。
+処理は `yomi.py` が担う。プロジェクトのルートで `uv run` から実行する。
 `--dpi <値>` を付けると背景画像をその DPI へ縮小して PDF を小さくできる（既定は元解像度のまま）。
 `--chunk <分割数>` を付けると、YomiToku のOCR処理を指定数に分割してメモリ使用量を抑えられる。
 
 ```powershell
-uv run yomitoku.py "<入力フォルダ>" [--output "<出力PDFパス>"] [--dpi <値>] [--chunk <分割数>]
-uv run yomitoku.py "<入力フォルダ>" -o "<出力PDFパス>" [--dpi <値>] [--chunk <分割数>]
+uv run yomi.py "<入力フォルダ>" [--output "<出力PDFパス>"] [--dpi <値>] [--chunk <分割数>]
+uv run yomi.py "<入力フォルダ>" -o "<出力PDFパス>" [--dpi <値>] [--chunk <分割数>]
 ```
 
 引数・オプション:
@@ -27,18 +36,17 @@ uv run yomitoku.py "<入力フォルダ>" -o "<出力PDFパス>" [--dpi <値>] [
 YomiToku が生成した素の検索可能 PDF は、最終 PDF の隣に `<出力名>.yomitoku.pdf` として残る。これが既に存在する場合は YomiToku の再実行（遅い GPU OCR）をスキップして再利用するので、`--dpi` の付け替えなどを素早く試せる。作り直したいときはこのファイルを消す。
 
 ### ラッパー
-`yomitoku.ps1` は `<本のフォルダ>\out` を入力に、`cache` 削除・最終 PDF=`<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` を組み立てて渡す薄い PowerShell ラッパー。素の検索可能 PDF は同じ `yomitoku` フォルダに `<本のフォルダ名>.yomitoku.pdf` として残る。`-Dpi <値>` で `--dpi`、`-Chunk <分割数>` で `--chunk` を渡す。
+`yomi.ps1` は `<本のフォルダ>\out` を入力に、最終 PDF=`<本のフォルダ>\yomitoku\<本のフォルダ名>.pdf` を組み立てて渡す薄い PowerShell ラッパー。素の検索可能 PDF は同じ `yomitoku` フォルダに `<本のフォルダ名>.yomitoku.pdf` として残る。`-Dpi <値>` で `--dpi`、`-Chunk <分割数>` で `--chunk` を渡す。
 ```powershell
-.\yomitoku.ps1 <フォルダパス>
-.\yomitoku.ps1 -Dpi <値> <フォルダパス>
-.\yomitoku.ps1 -Chunk <分割数> <フォルダパス>
+.\yomi.ps1 sample
+.\yomi.ps1 sample -Dpi 300 -Chunk 2
 ```
 
 ## 必要なもの
 
-- パッケージ管理：uv 0.11+
+- パッケージ管理：[uv](https://github.com/astral-sh/uv) 0.11+
 - GPU：NVIDIA ドライバ（GeForce 等）
-- ネイティブ：jbig2enc（`jbig2.exe`, 0.31 x64）uv 管理外。GitHub Release をルート直下へ展開する
+- ネイティブ：[jbig2enc](https://github.com/agl/jbig2enc)（`jbig2.exe`, 0.31 x64）uv 管理外。GitHub Release をルート直下へ展開する
 
 ## セットアップ手順（Windows + NVIDIA）
 
@@ -73,7 +81,7 @@ uv sync
   ```
 
 ### 4. jbig2enc（jbig2.exe）0.31 x64 をルート直下へ展開
-JBIG2 圧縮に必須のネイティブツール。uv では管理せず、GitHub Release の x64 版をプロジェクトルート直下に展開する。展開したフォルダと ZIP は `.gitignore` 対象なので、リポジトリには含めない。
+JBIG2 圧縮に使うネイティブツール [jbig2enc](https://github.com/agl/jbig2enc) x64 版を GitHub Release からプロジェクトルート直下に展開する。
 
 プロジェクトルートで実行:
 ```powershell
@@ -91,6 +99,11 @@ Remove-Item "jbig2enc-0.31-Windows-X64-MSVC.zip"
 
 ## 開発者向け
 
+format
+```powershell
+uv run ruff format .
+```
+
 typecheck
 ```powershell
 uv run ty check
@@ -99,9 +112,4 @@ uv run ty check
 lint
 ```powershell
 uv run ruff check .
-```
-
-format
-```powershell
-uv run ruff format .
 ```

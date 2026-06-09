@@ -10,6 +10,15 @@ from PIL import Image
 
 
 def parse_args() -> argparse.Namespace:
+    def positive_int(value: str) -> int:
+        try:
+            parsed = int(value)
+        except ValueError as exc:
+            raise argparse.ArgumentTypeError("must be an integer") from exc
+        if parsed <= 0:
+            raise argparse.ArgumentTypeError("must be positive")
+        return parsed
+
     parser = argparse.ArgumentParser(
         description="Create a searchable PDF and replace page images with JBIG2 backgrounds."
     )
@@ -27,13 +36,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--dpi",
-        type=int,
+        type=positive_int,
         default=None,
         help="Downscale background images to this DPI (never upscales). Defaults to source resolution.",
     )
     parser.add_argument(
         "--chunk",
-        type=int,
+        type=positive_int,
         default=None,
         help="Split pages into this many chunks to reduce YomiToku memory use. Defaults to one chunk.",
     )
@@ -84,9 +93,6 @@ def split_into_chunks(
     tifs: list[Path],
     requested_chunk_count: int | None,
 ) -> list[tuple[int, int, list[Path]]]:
-    if requested_chunk_count is not None and requested_chunk_count <= 0:
-        raise RuntimeError("--chunk must be positive")
-
     chunk_count = min(requested_chunk_count or 1, len(tifs))
     base_size, extra_count = divmod(len(tifs), chunk_count)
 

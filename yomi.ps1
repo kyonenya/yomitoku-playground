@@ -2,8 +2,8 @@
 param(
     [Parameter(Mandatory = $true, Position = 0)]
     [string]$ScanDir,
-    [int]$Dpi = 0,
-    [int]$Chunk = 0
+    [Nullable[int]]$Dpi,
+    [Nullable[int]]$Chunk
 )
 $ErrorActionPreference = "Stop"
 
@@ -17,7 +17,7 @@ $pyArgs = @(
     $inputDir,
     "--output", (Join-Path $outputDir "$((Get-Item -LiteralPath $ScanDir).Name).pdf")
 )
-if ($Dpi -gt 0) { $pyArgs += @("--dpi", $Dpi) }
-if ($Chunk -gt 0) { $pyArgs += @("--chunk", $Chunk) }
+if ($null -ne $Dpi) { $pyArgs += @("--dpi", $Dpi) }
+if ($null -ne $Chunk) { $pyArgs += @("--chunk", $Chunk) }
 
 uv run yomi.py @pyArgs

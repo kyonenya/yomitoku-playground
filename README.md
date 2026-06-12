@@ -51,16 +51,13 @@ Linux
 ### 1. このリポジトリをクローン
 
 ```bash
-```bash
-./yomi.sh sample --dpi 300 --chunk 2
-```
 git clone git@github.com:kyonenya/yomitoku-slimpdf.git
 cd yomitoku-slimpdf
 ```
 
 ### 2. uv をインストール
 
-[Installation | uv](https://docs.astral.sh/uv/getting-started/installation/#pypi) を参考に [uv](https://github.com/astral-sh/uv) をインストールする。
+[uv](https://github.com/astral-sh/uv) をインストールする。参考: [Installation | uv](https://docs.astral.sh/uv/getting-started/installation/#pypi)
 
 ### 3. PyTorch GPU 依存を更新する
 

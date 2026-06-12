@@ -2,8 +2,8 @@
 param(
     [Parameter(Mandatory = $true, Position = 0)]
     [string]$ScanDir,
-    [Nullable[int]]$Dpi,
-    [Nullable[int]]$Chunk
+    [Parameter(ValueFromRemainingArguments = $true)]
+    [string[]]$Rest
 )
 $ErrorActionPreference = "Stop"
 
@@ -13,11 +13,10 @@ if (-not (Test-Path -LiteralPath $inputDir -PathType Container)) {
 }
 
 $outputDir = Join-Path $ScanDir "yomitoku"
+$outputName = "$((Get-Item -LiteralPath $ScanDir).Name).pdf"
 $pyArgs = @(
     $inputDir,
-    "--output", (Join-Path $outputDir "$((Get-Item -LiteralPath $ScanDir).Name).pdf")
-)
-if ($null -ne $Dpi) { $pyArgs += @("--dpi", $Dpi) }
-if ($null -ne $Chunk) { $pyArgs += @("--chunk", $Chunk) }
+    "--output", (Join-Path $outputDir $outputName)
+) + $Rest
 
 uv run yomi.py @pyArgs

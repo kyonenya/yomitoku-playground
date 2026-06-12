@@ -24,36 +24,36 @@ uv run yomi.py sample/out -o sample/yomitoku/sample.pdf --dpi 300 --chunk 2
 ```
 
 - 引数に `*.tif` が含まれるフォルダを指定する
-- `--output`(`-o`) で出力 PDF のパスを指定できる。省略時は `./output.pdf`
+- `--output` / `-o` で出力 PDF のパスを指定できる。省略時は `./output.pdf`
 - `--dpi` で出力される PDF の DPI を指定できる
-- `--chunk` で YomiToku の OCR 処理を指定された数に分割して実行できる（メモリリーク対策）
+- `--chunk` で YomiToku の OCR 処理を n 等分して実行できる（メモリリーク対策）
 
 ### ラッパースクリプト
 
 [ScanTailor](https://github.com/ImageProcessing-ElectronicPublications/scantailor-experimental) 系のフォルダ構成を前提としている。
 
-```powershell
-.\yomi.ps1 sample
-```
+Windows
 
 ```powershell
-.\yomi.ps1 sample -Dpi 300 -Chunk 2
+.\yomi.ps1 sample --dpi 300 --chunk 2
+```
+
+Linux
+
+```bash
+./yomi.sh sample --dpi 300 --chunk 2
 ```
 
 指定されたフォルダの `out/*.tif` を処理し、同じフォルダの `yomitoku/<folder_name>.pdf` に出力する。
 
 ## セットアップ手順
 
-推奨環境: Windows + NVIDIA GPU
-
-```bash
-nvidia-smi
-# -> CUDA Version: 1x.x
-```
-
 ### 1. このリポジトリをクローン
 
 ```bash
+```bash
+./yomi.sh sample --dpi 300 --chunk 2
+```
 git clone git@github.com:kyonenya/yomitoku-slimpdf.git
 cd yomitoku-slimpdf
 ```
@@ -62,13 +62,14 @@ cd yomitoku-slimpdf
 
 [Installation | uv](https://docs.astral.sh/uv/getting-started/installation/#pypi) を参考に [uv](https://github.com/astral-sh/uv) をインストールする。
 
-### 3. PyTorch CUDA 依存を更新する
+### 3. PyTorch GPU 依存を更新する
 
-`pyproject.toml` の PyTorch CUDA 依存関係を自身の GPU に合うように更新する。
-この手順はエージェント用スキルとして [`update-pytorch-cuda-deps`](.agents/skills/update-pytorch-cuda-deps/SKILL.md) を用意してある。
+`pyproject.toml` の PyTorch GPU 依存関係を自身の GPU に合うように更新する。
+
+この手順はエージェント用スキルとして [`update-pytorch-gpu-deps`](.agents/skills/update-pytorch-gpu-deps/SKILL.md) を用意してある。
 
 ```markdown
-スキル .agents/skills/update-pytorch-cuda-deps/SKILL.md を実行して
+スキル .agents/skills/update-pytorch-gpu-deps/SKILL.md を実行して。
 ```
 
 Codex / Claude Code など任意のエージェントで実行できる。
@@ -80,6 +81,7 @@ uv sync
 ```
 
 初回は PyTorch が数 GB あるためダウンロードに時間がかかる。
+
 完了後、GPU が効いているか確認する。
 
 ```bash
@@ -91,13 +93,13 @@ uv run python -c "import torch; print(torch.cuda.is_available())"
 
 JBIG2 圧縮に使うネイティブツール [jbig2enc](https://github.com/agl/jbig2enc) を プロジェクトルート直下に展開する。
 
+Windows
+
 ```powershell
 Invoke-WebRequest `
     -Uri "https://github.com/agl/jbig2enc/releases/download/0.31/jbig2enc-0.31-Windows-X64-MSVC.zip" `
     -OutFile "jbig2enc-0.31-Windows-X64-MSVC.zip"
-Expand-Archive `
-    -Path "jbig2enc-0.31-Windows-X64-MSVC.zip" `
-    -Force
+Expand-Archive -Path "jbig2enc-0.31-Windows-X64-MSVC.zip" -Force
 Remove-Item "jbig2enc-0.31-Windows-X64-MSVC.zip"
 
 .\jbig2enc-0.31-Windows-X64-MSVC\bin\jbig2.exe --version

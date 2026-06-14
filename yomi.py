@@ -1,4 +1,5 @@
 import argparse
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -167,14 +168,20 @@ def correct_physical_page_size(
 
 
 def encode_jbig2(otsu_tif: Path) -> bytes:
-    JBIG2ENC_EXE = (
-        Path(__file__).resolve().parent / "jbig2enc-0.31-Windows-X64-MSVC/bin/jbig2.exe"
-    )
-    if not JBIG2ENC_EXE.is_file():
-        raise FileNotFoundError(f"jbig2enc executable not found: {JBIG2ENC_EXE}")
+    jbig2 = shutil.which("jbig2")
+    if jbig2 is None:
+        local_jbig2 = (
+            Path(__file__).resolve().parent
+            / "jbig2enc-0.31-Windows-X64-MSVC/bin/jbig2.exe"
+        )
+        if not local_jbig2.is_file():
+            raise FileNotFoundError(
+                f"jbig2 executable not found. Install the jbig2 package or place jbig2.exe at: {local_jbig2}"
+            )
+        jbig2 = str(local_jbig2)
 
     proc = subprocess.run(
-        [str(JBIG2ENC_EXE), "--pdf", str(otsu_tif)],
+        [jbig2, "--pdf", str(otsu_tif)],
         check=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
